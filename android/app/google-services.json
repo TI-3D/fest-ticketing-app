@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951606629690",
+    "project_id": "fest-ticketing1313",
+    "storage_bucket": "fest-ticketing1313.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951606629690:android:a64cae787d3460324eac03",
+        "android_client_info": {
+          "package_name": "com.fest_ticketing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3ypfXM4cN1B1qXBGISa7LK5cYH2njtmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
