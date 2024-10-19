@@ -1,3 +1,5 @@
+import 'package:fest_ticketing/presentation/category/screen/category.dart';
+import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-      ),body: SingleChildScrollView(
+      ),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -75,7 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           CircleAvatar(
                             radius: 30,
                             backgroundColor: Colors.grey[300],
-                            child: const Icon(Icons.music_note, color: Colors.red),
+                            child:
+                                const Icon(Icons.music_note, color: Colors.red),
                           ),
                           const SizedBox(height: 4),
                           Text('Category ${index + 1}'),
@@ -104,7 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: 'Notifications'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
@@ -122,11 +127,22 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              const Text(
-                'See All',
-                style: TextStyle(color: Colors.red),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryScreen(category: title),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'See All',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ],
           ),
@@ -137,21 +153,36 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: albumCovers.length,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      albumCovers[index],
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetailScreen(
+                        title: 'Concert Title',
+                        artist: 'Artist Name',
+                        imagePath: albumCovers[index],
+                      ),
                     ),
-                    const SizedBox(height: 4),
-                    const Text('Concert Title'),
-                    const Text('Artist Name', style: TextStyle(color: Colors.grey)),
-                  ],
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        albumCovers[index],
+                        width: 120,
+                        height: 120,
+                        fit: BoxFit.cover,
+                      ),
+                      const SizedBox(height: 4),
+                      const Text('Concert Title'),
+                      const Text('Artist Name',
+                          style: TextStyle(color: Colors.grey)),
+                    ],
+                  ),
                 ),
               );
             },
@@ -160,8 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
 }
-  
+
 
   // Widget builder(BuildContext context, SearchController controller) {
   //   return TextField(
