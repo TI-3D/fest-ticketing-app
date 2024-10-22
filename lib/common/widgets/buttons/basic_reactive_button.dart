@@ -21,35 +21,56 @@ class BasicReactiveButton extends StatelessWidget {
     return BlocBuilder<ButtonStateCubit, ButtonState>(
         builder: (context, state) {
       if (state is ButtonLoadingState) {
-        return _loadingButton(context);
+        return _initialButton(context);
       }
-      return _initialButton(context);
+      return _loadingButton(context);
     });
   }
 
   Widget _loadingButton(BuildContext context) {
     return ElevatedButton(
-        onPressed: null,
-        style: ElevatedButton.styleFrom(),
-        child: Container(
-            alignment: Alignment.center,
-            child: const CircularProgressIndicator()));
+      onPressed: null,
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size.fromHeight(height ?? 50), // Ukuran minimum
+        padding: const EdgeInsets.symmetric(
+            horizontal: 16), // Padding untuk konsistensi
+      ),
+      child: const SizedBox(
+        height: 50, // Ukuran tetap untuk tombol loading
+        child: Center(
+          child: SizedBox(
+            width: 24, // Ukuran lebar
+            height: 24, // Ukuran tinggi
+            child: CircularProgressIndicator(
+              strokeWidth: 3, // Menyesuaikan ketebalan garis
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _initialButton(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: Size.fromHeight(height ?? 50),
+        minimumSize: Size.fromHeight(height ?? 50), // Ukuran minimum
+        padding: const EdgeInsets.symmetric(
+            horizontal: 16), // Padding untuk konsistensi
       ),
-      child: child ??
-          Text(
-            title,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-          ),
+      child: SizedBox(
+        height: 50, // Ukuran tetap untuk tombol normal
+        child: Center(
+          child: child ??
+              Text(
+                title,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+              ),
+        ),
+      ),
     );
   }
 }
