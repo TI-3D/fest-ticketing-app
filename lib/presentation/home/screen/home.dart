@@ -142,7 +142,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          _onItemTapped(index);
+          if (index == 1) {
+            // Jika tombol notification ditekan
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      NotificationPage()), // Arahkan ke NotificationPage
+            );
+          }
+        },
         selectedItemColor: Colors.red,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed, // Add this for 4+ items
@@ -158,17 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
-        onTap: (index) {
-          if (index == 1) {
-            // Jika tombol notification ditekan
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      NotificationPage()), // Arahkan ke NotificationPage
-            );
-          }
-        },
       ),
     );
   }
