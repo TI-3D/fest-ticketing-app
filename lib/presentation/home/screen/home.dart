@@ -281,6 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: 'Concert Title',
                         artist: 'Artist Name',
                         imagePath: albumCovers[index],
+                        price: 1000000, // Replace with actual price
                       ),
                     ),
                   ),

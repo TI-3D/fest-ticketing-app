@@ -31,6 +31,7 @@ class CategoryScreen extends StatelessWidget {
                     title: 'Concert ${index + 1}',
                     artist: 'Artist ${index + 1}',
                     imagePath: 'assets/images/konser1.png',
+                    price: 1000000, // Replace with actual price
                   ),
                 ),
               );
