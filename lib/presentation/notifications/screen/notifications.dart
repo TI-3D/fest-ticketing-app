@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/presentation/notifications/screen/notification_detail_page.dart';
 
 class NotificationPage extends StatelessWidget {
   final List<Map<String, String>> notifications = [
@@ -19,7 +20,6 @@ class NotificationPage extends StatelessWidget {
     },
   ];
 
-  // Removed the 'const' keyword from the constructor
   NotificationPage({Key? key}) : super(key: key);
 
   @override
@@ -44,13 +44,14 @@ class NotificationPage extends StatelessWidget {
             message: notifications[index]['message']!,
             isRead: notifications[index]['read'] == 'true',
             onTap: () {
-              // Handle notification tap event
-              // You can navigate to another screen or show a dialog here
-              // For example:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(
-                        'Tapped on notification: ${notifications[index]['message']}')),
+              // Navigasi ke halaman detail notifikasi
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NotificationDetailPage(
+                    message: notifications[index]['message']!,
+                  ),
+                ),
               );
             },
           );
@@ -63,7 +64,7 @@ class NotificationPage extends StatelessWidget {
 class NotificationCard extends StatelessWidget {
   final String message;
   final bool isRead;
-  final VoidCallback? onTap; // Add an optional onTap parameter
+  final VoidCallback? onTap;
 
   const NotificationCard(
       {Key? key, required this.message, required this.isRead, this.onTap})
@@ -103,7 +104,7 @@ class NotificationCard extends StatelessWidget {
           ),
         ),
         dense: true,
-        onTap: onTap, // Call onTap when tapped
+        onTap: onTap,
       ),
     );
   }
