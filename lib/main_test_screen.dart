@@ -1,6 +1,6 @@
 import 'package:fest_ticketing/core/config/themes/app_theme.dart';
 import 'package:fest_ticketing/firebase_options.dart';
-import 'package:fest_ticketing/presentation/home/screen/home.dart';
+import 'package:fest_ticketing/presentation/authentication/screen/signup.dart';
 import 'package:fest_ticketing/service_locator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class App extends StatelessWidget {
       // darkTheme: AppTheme.dark,
       // themeMode: ThemeMode.system,
       // Change this
-      home: HomeScreen(),
+      home: SignupScreen(),
     );
   }
 }

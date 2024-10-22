@@ -1,6 +1,7 @@
 import 'package:fest_ticketing/presentation/category/screen/category.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
 import 'package:fest_ticketing/presentation/profile/screen/profile.dart';
+import 'package:fest_ticketing/presentation/notifications/screen/notifications.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -157,6 +158,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
+        onTap: (index) {
+          if (index == 1) {
+            // Jika tombol notification ditekan
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      NotificationPage()), // Arahkan ke NotificationPage
+            );
+          }
+        },
       ),
     );
   }

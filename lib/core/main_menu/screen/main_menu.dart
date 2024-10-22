@@ -1,12 +1,11 @@
 import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
+import 'package:fest_ticketing/presentation/home/screen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 List<Widget> _bodyItems = [
-  const Center(
-    child: Text("Home"),
-  ),
+  HomeScreen(),
   const Center(
     child: Text("Notification"),
   ),
@@ -36,6 +35,9 @@ class MainMenuScreen extends StatelessWidget {
         return Scaffold(
           body: _bodyItems[state.tabIndex],
           bottomNavigationBar: BottomNavigationBar(
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            type: BottomNavigationBarType.fixed,
             items: _bottomNavbarItem,
             currentIndex: state.tabIndex,
             selectedItemColor: Theme.of(context).colorScheme.primary,
