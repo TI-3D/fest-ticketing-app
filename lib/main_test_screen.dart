@@ -20,8 +20,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      // darkTheme: AppTheme.dark,
-      // themeMode: ThemeMode.system,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       // Change this
       home: SignupScreen(),
     );
