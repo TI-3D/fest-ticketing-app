@@ -1,3 +1,4 @@
+import 'package:fest_ticketing/presentation/product/screen/checkout.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -69,7 +70,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'IDR ${price.toStringAsFixed(0)}',
+                'Rp ${price.toStringAsFixed(0)}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -135,9 +136,7 @@ class ProductDetailScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: () {
-            // Add booking logic here
-          },
+          onPressed: () => _showBookingOptions(context),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             shape: RoundedRectangleBorder(
@@ -157,6 +156,143 @@ class ProductDetailScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showBookingOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        int quantity = 1;
+        String selectedGrade = 'VIP'; // Default grade
+
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Buy Ticket',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Grade selection
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Grade',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      DropdownButton<String>(
+                        value: selectedGrade,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedGrade = newValue!;
+                          });
+                        },
+                        items: <String>['GA', 'VIP', 'VVIP']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Quantity selection
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Quantity',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (quantity > 1) quantity--;
+                              });
+                            },
+                            icon: const Icon(Icons.remove),
+                          ),
+                          Text(
+                            quantity.toString(),
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                quantity++;
+                              });
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Add booking logic here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Checkout(
+                              ticketClass: selectedGrade, 
+                              quantity: quantity, 
+                              price: price,
+                            ),
+                          ),
+                        ); // Close the modal
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: Text(
+                        'Rp ${(price * quantity).toStringAsFixed(0)}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
