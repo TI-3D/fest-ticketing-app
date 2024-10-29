@@ -1,3 +1,4 @@
+import 'package:fest_ticketing/presentation/profile/screen/sales_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
 
@@ -82,6 +83,21 @@ class ProfileScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => EventRequestPage(),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 24),
+          // Menu item untuk Melihat Penjualan
+          _buildMenuItem(
+            icon: Icons.list,
+            title: 'Melihat Penjualan',
+            onTap: () {
+              // Navigasi ke halaman SalesPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SalesPage(),
                 ),
               );
             },
