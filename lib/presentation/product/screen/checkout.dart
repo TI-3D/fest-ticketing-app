@@ -1,4 +1,4 @@
-import 'package:fest_ticketing/presentation/product/payment_method.dart';
+import 'package:fest_ticketing/presentation/product/screen/payment_method.dart';
 import 'package:flutter/material.dart';
 
 class Checkout extends StatefulWidget {
@@ -19,6 +19,7 @@ class Checkout extends StatefulWidget {
 
 class _CheckoutState extends State<Checkout> {
   String selectedPaymentMethod = 'Credit Card';
+
   @override
   Widget build(BuildContext context) {
     final double subtotal = widget.price * widget.quantity;
@@ -35,145 +36,129 @@ class _CheckoutState extends State<Checkout> {
         ),
         title: const Text('Checkout', style: TextStyle(color: Colors.black)),
         centerTitle: true,
-        // actions: [
-        //   TextButton(
-        //     onPressed: () {},
-        //     child: const Text(
-        //       'Remove All',
-        //       style: TextStyle(
-        //         color: Colors.red,
-        //         fontWeight: FontWeight.bold,
-        //       ),
-        //     ),
-        //   )
-        // ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // cart item
-              ListTile(
-                leading: Image.asset('images/konser1.png', width: 60),
-                title: Text('TXT world Tour Act: Promise in Jakarta'),
-                subtitle: Text('Class - ${widget.ticketClass}'),
-                // trailing: Row(
-                //   mainAxisSize: MainAxisSize.min,
-                //   children: [
-                //     IconButton(
-                //       icon: const Icon(Icons.remove_circle_outline,
-                //           color: Colors.red),
-                //       onPressed: () {
-                //         // logic decrease
-                //       },
-                //     ),
-                //     Text('$quantity'),
-                //     IconButton(
-                //       icon: const Icon(Icons.add_circle_outline,
-                //           color: Colors.green),
-                //       onPressed: () {
-                //         // logic increase
-                //       },
-                //     ),
-                //   ],
-                // ),
-              ),
-              const Divider(),
-              // Price Details
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  leading: Image.asset('images/konser1.png', width: 60),
+                  title: const Text('TXT World Tour Act: Promise in Jakarta'),
+                  subtitle: Text('Class - ${widget.ticketClass}'),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Price Details',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 8),
-                    _buildPriceRow(
-                        'Subtotal', 'Rp ${subtotal.toStringAsFixed(0)}'),
-                    _buildPriceRow('Tax', 'Rp 0'),
-                    _buildPriceRow(
-                        'Service Fee', 'Rp ${serviceFee.toStringAsFixed(0)}'),
-                    _buildPriceRow('Total', 'Rp ${total.toStringAsFixed(0)}',
-                        isBold: true),
+              ],
+            ),
+          ),
+          DraggableScrollableSheet(
+            initialChildSize: 0.4, // Ukuran awal sheet (40% dari tinggi layar)
+            minChildSize: 0.2, // Ukuran minimum sheet (20% dari tinggi layar)
+            maxChildSize: 0.8, // Ukuran maksimum sheet (80% dari tinggi layar)
+            builder: (context, scrollController) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, -2),
+                    ),
                   ],
                 ),
-              ),
-              // const SizedBox(height: 16),
-              // // visitor details
-              // ListTile(
-              //   title: const Text('Visitor Details',
-              //       style: TextStyle(fontWeight: FontWeight.bold)),
-              //   trailing: const Icon(Icons.chevron_right),
-              //   onTap: () {
-              //     // navigate to visitor details
-              //   },
-              // ),
-              const Divider(),
-              // payment method
-              ListTile(
-                title: const Text('Payment Method',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(selectedPaymentMethod),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () async {
-                  // navigate to payment method
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentMethod(
-                        selectedPaymentMethod: selectedPaymentMethod,
-                        onPaymentMethodSelected: (method) {
-                          setState(() {
-                            selectedPaymentMethod = method;
-                          });
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Price Details
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Price Details',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 8),
+                            _buildPriceRow(
+                                'Subtotal', 'Rp ${subtotal.toStringAsFixed(0)}'),
+                            _buildPriceRow('Tax', 'Rp 0'),
+                            _buildPriceRow('Service Fee',
+                                'Rp ${serviceFee.toStringAsFixed(0)}'),
+                            _buildPriceRow('Total',
+                                'Rp ${total.toStringAsFixed(0)}',
+                                isBold: true),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Payment Method
+                      ListTile(
+                        title: const Text('Payment Method',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Text(selectedPaymentMethod),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PaymentMethod(
+                                selectedPaymentMethod: selectedPaymentMethod,
+                                onPaymentMethodSelected: (method) {
+                                  setState(() {
+                                    selectedPaymentMethod = method;
+                                  });
+                                },
+                              ),
+                            ),
+                          );
+
+                          if (result != null) {
+                            setState(() {
+                              selectedPaymentMethod = result;
+                            });
+                          }
                         },
                       ),
-                    ),
-                  );
-
-                  if (result != null) {
-                    // logic payment method
-                    setState(() {
-                      selectedPaymentMethod = result;
-                    });
-                  }
-                },
-              ),
-              const Divider(),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              // logic checkout
+                      const SizedBox(height: 16),
+                      // Checkout Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // logic checkout
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          child: const Text(
+                            'Checkout',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-            child: const Text(
-              'Checkout',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -203,4 +188,3 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 }
-
