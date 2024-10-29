@@ -1,6 +1,7 @@
+import 'package:fest_ticketing/presentation/product/payment_method.dart';
 import 'package:flutter/material.dart';
 
-class Checkout extends StatelessWidget {
+class Checkout extends StatefulWidget {
   final String ticketClass;
   final int quantity;
   final double price;
@@ -13,8 +14,14 @@ class Checkout extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _CheckoutState createState() => _CheckoutState();
+}
+
+class _CheckoutState extends State<Checkout> {
+  String selectedPaymentMethod = 'Credit Card';
+  @override
   Widget build(BuildContext context) {
-    final double subtotal = price * quantity;
+    final double subtotal = widget.price * widget.quantity;
     final double serviceFee = subtotal * 0.05;
     final double total = subtotal + serviceFee;
 
@@ -28,18 +35,18 @@ class Checkout extends StatelessWidget {
         ),
         title: const Text('Checkout', style: TextStyle(color: Colors.black)),
         centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Remove All',
-              style: TextStyle(
-                color: Colors.red,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )
-        ],
+        // actions: [
+        //   TextButton(
+        //     onPressed: () {},
+        //     child: const Text(
+        //       'Remove All',
+        //       style: TextStyle(
+        //         color: Colors.red,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   )
+        // ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -49,29 +56,29 @@ class Checkout extends StatelessWidget {
             children: [
               // cart item
               ListTile(
-                leading: Image.asset('asset/images/konser1.png', width: 60),
+                leading: Image.asset('images/konser1.png', width: 60),
                 title: Text('TXT world Tour Act: Promise in Jakarta'),
-                subtitle: Text('Class - $ticketClass'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle_outline,
-                          color: Colors.red),
-                      onPressed: () {
-                        // logic decrease
-                      },
-                    ),
-                    Text('$quantity'),
-                    IconButton(
-                      icon: const Icon(Icons.add_circle_outline,
-                          color: Colors.green),
-                      onPressed: () {
-                        // logic increase
-                      },
-                    ),
-                  ],
-                ),
+                subtitle: Text('Class - ${widget.ticketClass}'),
+                // trailing: Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   children: [
+                //     IconButton(
+                //       icon: const Icon(Icons.remove_circle_outline,
+                //           color: Colors.red),
+                //       onPressed: () {
+                //         // logic decrease
+                //       },
+                //     ),
+                //     Text('$quantity'),
+                //     IconButton(
+                //       icon: const Icon(Icons.add_circle_outline,
+                //           color: Colors.green),
+                //       onPressed: () {
+                //         // logic increase
+                //       },
+                //     ),
+                //   ],
+                // ),
               ),
               const Divider(),
               // Price Details
@@ -97,25 +104,45 @@ class Checkout extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
-              // visitor details
-              ListTile(
-                title: const Text('Visitor Details',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  // navigate to visitor details
-                },
-              ),
+              // const SizedBox(height: 16),
+              // // visitor details
+              // ListTile(
+              //   title: const Text('Visitor Details',
+              //       style: TextStyle(fontWeight: FontWeight.bold)),
+              //   trailing: const Icon(Icons.chevron_right),
+              //   onTap: () {
+              //     // navigate to visitor details
+              //   },
+              // ),
               const Divider(),
               // payment method
               ListTile(
                 title: const Text('Payment Method',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: const Text('Credit Card'),
+                subtitle: Text(selectedPaymentMethod),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () {
+                onTap: () async {
                   // navigate to payment method
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentMethod(
+                        selectedPaymentMethod: selectedPaymentMethod,
+                        onPaymentMethodSelected: (method) {
+                          setState(() {
+                            selectedPaymentMethod = method;
+                          });
+                        },
+                      ),
+                    ),
+                  );
+
+                  if (result != null) {
+                    // logic payment method
+                    setState(() {
+                      selectedPaymentMethod = result;
+                    });
+                  }
                 },
               ),
               const Divider(),
@@ -176,3 +203,4 @@ class Checkout extends StatelessWidget {
     );
   }
 }
+
