@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -71,12 +72,18 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          // menu item
+          // Menu item
           _buildMenuItem(
             icon: Icons.theater_comedy,
             title: 'Event Organizer',
             onTap: () {
-              // Event organizer tap
+              // Navigasi ke halaman EventRequestPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EventRequestPage(),
+                ),
+              );
             },
           ),
           _buildMenuItem(
@@ -117,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildMenuItem({
-    required IconData icon, 
+    required IconData icon,
     required String title,
     required VoidCallback onTap,
   }) {
