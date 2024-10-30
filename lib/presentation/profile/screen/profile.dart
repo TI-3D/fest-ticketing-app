@@ -88,18 +88,12 @@ class ProfileScreen extends StatelessWidget {
             },
           ),
           const SizedBox(height: 24),
-          // Menu item untuk Melihat Penjualan
+          // Menu item untuk Melihat History
           _buildMenuItem(
             icon: Icons.list,
-            title: 'Melihat Penjualan',
+            title: 'History',
             onTap: () {
-              // Navigasi ke halaman SalesPage
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SalesPage(),
-                ),
-              );
+              // Navigasi ke halaman History
             },
           ),
           _buildMenuItem(

@@ -30,9 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # chart
-  fl_chart: ^0.40.0  # Pastikan untuk menggunakan versi terbaru
-
   # image
   image_picker: ^0.8.5+3  # versi terbaru
   
