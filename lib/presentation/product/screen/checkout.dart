@@ -1,3 +1,4 @@
+import 'package:fest_ticketing/presentation/product/screen/payment.dart';
 import 'package:fest_ticketing/presentation/product/screen/payment_method.dart';
 import 'package:flutter/material.dart';
 
@@ -88,13 +89,13 @@ class _CheckoutState extends State<Checkout> {
                             const Text('Price Details',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             const SizedBox(height: 8),
-                            _buildPriceRow(
-                                'Subtotal', 'Rp ${subtotal.toStringAsFixed(0)}'),
+                            _buildPriceRow('Subtotal',
+                                'Rp ${subtotal.toStringAsFixed(0)}'),
                             _buildPriceRow('Tax', 'Rp 0'),
                             _buildPriceRow('Service Fee',
                                 'Rp ${serviceFee.toStringAsFixed(0)}'),
-                            _buildPriceRow('Total',
-                                'Rp ${total.toStringAsFixed(0)}',
+                            _buildPriceRow(
+                                'Total', 'Rp ${total.toStringAsFixed(0)}',
                                 isBold: true),
                           ],
                         ),
@@ -134,7 +135,28 @@ class _CheckoutState extends State<Checkout> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // logic checkout
+                            if (selectedPaymentMethod == 'Credit Card') {
+                              // Credit Card Payment
+                            } else if (selectedPaymentMethod ==
+                                'Bank Transfer') {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Payment(
+                                      totalAmount: total,
+                                      bankName: 'Transfer Bank',
+                                      PaymentCode: '8077 7000 1866 1840 4'),
+                                ),
+                              );
+                            } else if (selectedPaymentMethod == 'Paypal') {
+                              // Paypal Payment
+                            } else if (selectedPaymentMethod == 'Gopay') {
+                              // Gopay Payment
+                            } else if (selectedPaymentMethod == 'DANA') {
+                              // DANA Payment
+                            } else if (selectedPaymentMethod == 'OVO') {
+                              // OVO Payment
+                            } else {}
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
