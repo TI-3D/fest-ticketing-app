@@ -1,20 +1,17 @@
 import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
 import 'package:fest_ticketing/presentation/home/screen/home.dart';
+import 'package:fest_ticketing/presentation/notifications/screen/notifications.dart';
+import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
+import 'package:fest_ticketing/presentation/profile/screen/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 List<Widget> _bodyItems = [
-  HomeScreen(),
-  const Center(
-    child: Text("Notification"),
-  ),
-  const Center(
-    child: Text("Order"),
-  ),
-  const Center(
-    child: Text("Profile"),
-  ),
+  const HomeScreen(),
+  NotificationPage(),
+  OrdersPage(),
+  ProfileScreen(),
 ];
 
 List<BottomNavigationBarItem> _bottomNavbarItem = [

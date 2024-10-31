@@ -14,22 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _showCategories = false;
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    if (index == 3) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
-        ),
-      );
-    }
-  }
+  // int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ProfileScreen()),
-                  ); 
+                        builder: (context) => const ProfileScreen()),
+                  );
                 },
                 child: const CircleAvatar(
                   backgroundColor: Color(0xFFE0E0E0),
                   child: Icon(Icons.person, color: Colors.grey),
                 ),
-              )
-              ,
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -140,51 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.only(bottom: padding.bottom + 60)),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          _onItemTapped(index);
-          if (index == 1) {
-            // Jika tombol notification ditekan
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      NotificationPage()), // Arahkan ke NotificationPage
-            );
-          }
-          if (index == 2) {
-            // Jika tombol tiket ditekan
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      OrdersPage()), // Arahkan ke NotificationPage
-            );
-          }
-        },
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed, // Add this for 4+ items
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home), 
-            label: 'Home'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.theaters_outlined),
-            label: 'Ticket',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person), 
-            label: 'Profile'
-          ),
-        ],
       ),
     );
   }
