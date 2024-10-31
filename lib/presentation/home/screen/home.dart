@@ -1,4 +1,5 @@
 import 'package:fest_ticketing/presentation/category/screen/category.dart';
+import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
 import 'package:fest_ticketing/presentation/profile/screen/profile.dart';
 import 'package:fest_ticketing/presentation/notifications/screen/notifications.dart';
@@ -153,12 +154,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       NotificationPage()), // Arahkan ke NotificationPage
             );
           }
+          if (index == 2) {
+            // Jika tombol tiket ditekan
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      OrdersPage()), // Arahkan ke NotificationPage
+            );
+          }
         },
         selectedItemColor: Colors.red,
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed, // Add this for 4+ items
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home), 
+            label: 'Home'
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
@@ -167,7 +180,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.theaters_outlined),
             label: 'Ticket',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person), 
+            label: 'Profile'
+          ),
         ],
       ),
     );
