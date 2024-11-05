@@ -101,6 +101,16 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ),
                       const SizedBox(height: 16),
+                      // Face Verification
+                      ListTile(
+                        title: const Text('Verification your face',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () {
+                          // Face Verification
+                        },
+                      ),
+                      const SizedBox(height: 16),
                       // Payment Method
                       ListTile(
                         title: const Text('Payment Method',
