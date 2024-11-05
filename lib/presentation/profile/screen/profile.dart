@@ -1,4 +1,4 @@
-import 'package:fest_ticketing/presentation/profile/screen/sales_page.dart';
+import 'package:fest_ticketing/presentation/eo/screen/event_organizer.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
 
@@ -78,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EventRequestPage(),
+                  builder: (context) => EventOrganizerScreen(),
                 ),
               );
             },
