@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   # image
   image_picker: ^0.8.5+3  # versi terbaru
+  fl_chart: ^0.65.0
+  intl: ^0.18.0
   
   # Icons
   iconsax: ^0.0.8
