@@ -1,11 +1,12 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/orders/screen/orders_detail.dart';
 
 class OrdersPage extends StatelessWidget {
   final List<Map<String, dynamic>> orders = [
-    {"orderId": "#456765", "itemsCount": 4},
-    {"orderId": "#454569", "itemsCount": 2},
-    {"orderId": "#454809", "itemsCount": 1},
+    {"orderId": "TXT World Tour Act: Promise in Jakarta", "date": "10 - 14 - 2024", "status": "Pending Payment"},
+    {"orderId": "CITY CAMP 2024", "date": "10 - 14 - 2024", "status": "Completed"},
+    {"orderId": "TXT World Tour Act: Promise in Jakarta", "date": "10 - 14 - 2024", "status": "Canceled"},
+    {"orderId": "Day6 : FOREVER YOUNG", "date": "10 - 14 - 2024", "status": "Finished"},
   ];
 
   OrdersPage({Key? key}) : super(key: key);
@@ -23,24 +24,29 @@ class OrdersPage extends StatelessWidget {
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: ListView.builder(
+      body: Container(
+        color: Colors.grey[100], // Background color for the page
         padding: const EdgeInsets.all(16),
-        itemCount: orders.length,
-        itemBuilder: (context, index) {
-          return OrderCard(
-            orderId: orders[index]['orderId'],
-            itemsCount: orders[index]['itemsCount'],
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => OrdersDetailPage(order: orders[index]),
-                ),
-              );
-            },
-          );
-        },
+        child: ListView.builder(
+          itemCount: orders.length,
+          itemBuilder: (context, index) {
+            return OrderCard(
+              orderId: orders[index]['orderId'] ?? "Unknown Order", // Default value
+              date: orders[index]['date'] ?? "Unknown Date", // Default value
+              status: orders[index]['status'] ?? "Unknown Status", // Default value
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrdersDetailPage(order: orders[index]),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -48,26 +54,84 @@ class OrdersPage extends StatelessWidget {
 
 class OrderCard extends StatelessWidget {
   final String orderId;
-  final int itemsCount;
+  final String date;
+  final String status;
   final VoidCallback? onTap;
 
   const OrderCard({
     Key? key,
     required this.orderId,
-    required this.itemsCount,
+    required this.date,
+    required this.status,
     this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Color statusColor;
+    switch (status) {
+      case "Pending Payment":
+        statusColor = Colors.orange;
+        break;
+      case "Completed":
+        statusColor = Colors.green;
+        break;
+      case "Canceled":
+        statusColor = Colors.red;
+        break;
+      case "Finished":
+        statusColor = Colors.blue;
+        break;
+      default:
+        statusColor = Colors.grey;
+    }
+
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
-        leading: const Icon(Icons.receipt_long, color: Colors.white),
-        title: Text("Order $orderId"),
-        subtitle: Text("$itemsCount items"),
-        trailing: const Icon(Icons.arrow_forward_ios),
+      child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                orderId,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                date,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  status,
+                  style: TextStyle(
+                    color: statusColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
