@@ -1,5 +1,6 @@
 import 'package:fest_ticketing/presentation/product/screen/payment.dart';
 import 'package:fest_ticketing/presentation/product/screen/payment_method.dart';
+import 'package:fest_ticketing/presentation/product/screen/purchase_succes.dart';
 import 'package:flutter/material.dart';
 
 class Checkout extends StatefulWidget {
@@ -164,6 +165,12 @@ class _CheckoutState extends State<Checkout> {
                               // Gopay Payment
                             } else if (selectedPaymentMethod == 'DANA') {
                               // DANA Payment
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PurchaseSucces()
+                                ),
+                              );
                             } else if (selectedPaymentMethod == 'OVO') {
                               // OVO Payment
                             } else {}
