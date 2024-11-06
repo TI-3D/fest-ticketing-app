@@ -1,3 +1,4 @@
+import 'package:fest_ticketing/presentation/orders/screen/ticket.dart';
 import 'package:flutter/material.dart';
 
 class PurchaseSucces extends StatelessWidget {
@@ -51,12 +52,12 @@ class PurchaseSucces extends StatelessWidget {
                   // button to see ticket details
                   ElevatedButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const TicketDetailPage(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Ticket(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
