@@ -1,12 +1,29 @@
+// orders.dart
 import 'package:flutter/material.dart';
-import 'package:fest_ticketing/presentation/orders/screen/orders_detail.dart';
+import 'orders_detail.dart';
 
 class OrdersPage extends StatelessWidget {
   final List<Map<String, dynamic>> orders = [
-    {"orderId": "TXT World Tour Act: Promise in Jakarta", "date": "10 - 14 - 2024", "status": "Pending Payment"},
-    {"orderId": "CITY CAMP 2024", "date": "10 - 14 - 2024", "status": "Completed"},
-    {"orderId": "TXT World Tour Act: Promise in Jakarta", "date": "10 - 14 - 2024", "status": "Canceled"},
-    {"orderId": "Day6 : FOREVER YOUNG", "date": "10 - 14 - 2024", "status": "Finished"},
+    {
+      "orderId": "TXT World Tour Act: Promise in Jakarta",
+      "date": "10 - 14 - 2024",
+      "status": "Pending Payment"
+    },
+    {
+      "orderId": "CITY CAMP 2024",
+      "date": "10 - 14 - 2024",
+      "status": "Completed"
+    },
+    {
+      "orderId": "TXT World Tour Act: Promise in Jakarta",
+      "date": "10 - 14 - 2024",
+      "status": "Canceled"
+    },
+    {
+      "orderId": "Day6 : FOREVER YOUNG",
+      "date": "10 - 14 - 2024",
+      "status": "Finished"
+    },
   ];
 
   OrdersPage({Key? key}) : super(key: key);
@@ -19,28 +36,29 @@ class OrdersPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
+        titleTextStyle: TextStyle(
+          color: Colors.grey.shade600,
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.grey),
       ),
       body: Container(
-        color: Colors.grey[100], // Background color for the page
+        color: Colors.grey[100],
         padding: const EdgeInsets.all(16),
         child: ListView.builder(
           itemCount: orders.length,
           itemBuilder: (context, index) {
             return OrderCard(
-              orderId: orders[index]['orderId'] ?? "Unknown Order", // Default value
-              date: orders[index]['date'] ?? "Unknown Date", // Default value
-              status: orders[index]['status'] ?? "Unknown Status", // Default value
+              orderId: orders[index]['orderId'] ?? "Unknown Order",
+              date: orders[index]['date'] ?? "Unknown Date",
+              status: orders[index]['status'] ?? "Unknown Status",
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrdersDetailPage(order: orders[index]),
+                    builder: (context) =>
+                        OrdersDetailsPage(order: orders[index]),
                   ),
                 );
               },
@@ -102,7 +120,7 @@ class OrderCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Color.fromRGBO(117, 117, 117, 1),
                 ),
               ),
               const SizedBox(height: 4),
@@ -110,7 +128,7 @@ class OrderCard extends StatelessWidget {
                 date,
                 style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Color.fromRGBO(117, 117, 117, 1),
                 ),
               ),
               const SizedBox(height: 8),
