@@ -1,5 +1,6 @@
 // orders_detail.dart
 import 'package:flutter/material.dart';
+import 'ticket.dart'; // Pastikan ini adalah halaman ticket yang benar
 
 class OrdersDetailsPage extends StatelessWidget {
   final Map<String, dynamic> order;
@@ -23,7 +24,7 @@ class OrdersDetailsPage extends StatelessWidget {
         title: const Text(
           'Order #454809',
           style: TextStyle(
-            color: Colors.grey,
+            color: Color.fromRGBO(117, 117, 117, 1),
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -37,12 +38,12 @@ class OrdersDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Card(
-              color: Colors.grey[300],
+              color: Colors.white70,
               margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
                 contentPadding: const EdgeInsets.all(8.0),
                 leading: Image.network(
-                  'https://via.placeholder.com/60', // Replace with your image URL
+                  'https://via.placeholder.com/60', // Ganti dengan URL gambar Anda
                   width: 60,
                   height: 60,
                   fit: BoxFit.cover,
@@ -59,18 +60,18 @@ class OrdersDetailsPage extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                 ),
                 subtitle: const Text(
                   'Class - GA',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
             const SizedBox(height: 8),
             Card(
-              color: Colors.grey[300],
+              color: Colors.white70,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -81,7 +82,7 @@ class OrdersDetailsPage extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.grey,
+                        color: Colors.black,
                       ),
                     ),
                     const Divider(),
@@ -116,11 +117,18 @@ class OrdersDetailsPage extends StatelessWidget {
                     const SizedBox(height: 8),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        'Details',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
+                      child: InkWell(
+                        onTap: () {
+                          // Tambahkan tindakan yang ingin dilakukan saat "Details" diklik
+                          print("Details clicked");
+                        },
+                        child: Text(
+                          'Details',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.normal,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
                     ),
@@ -144,12 +152,18 @@ class OrdersDetailsPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Card(
-              color: Colors.grey[300],
+              color: Colors.white70,
               child: ListTile(
                 title: const Text('Tickets details'),
                 trailing: const Icon(Icons.arrow_forward),
                 onTap: () {
-                  // Navigate to ticket details page
+                  // Navigasi ke halaman Ticket
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Ticket()), // Pastikan Ticket adalah widget yang benar
+                  );
                 },
               ),
             ),
