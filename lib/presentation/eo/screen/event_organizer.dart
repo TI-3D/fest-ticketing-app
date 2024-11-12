@@ -1,4 +1,5 @@
 import 'package:fest_ticketing/presentation/eo/screen/sales.dart';
+import 'package:fest_ticketing/presentation/eo/screen/upload_event.dart';
 import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
@@ -90,7 +91,7 @@ class EventOrganizerScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EventRequestPage(),
+                        builder: (context) => UploadEventScreen(),
                       ),
                     );
                   },

@@ -55,7 +55,7 @@ class _CheckoutState extends State<Checkout> {
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.4, // Ukuran awal sheet (40% dari tinggi layar)
+            initialChildSize: 0.5, // Ukuran awal sheet (40% dari tinggi layar)
             minChildSize: 0.2, // Ukuran minimum sheet (20% dari tinggi layar)
             maxChildSize: 0.8, // Ukuran maksimum sheet (80% dari tinggi layar)
             builder: (context, scrollController) {

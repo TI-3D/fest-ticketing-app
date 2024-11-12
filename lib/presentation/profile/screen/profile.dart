@@ -44,7 +44,7 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 16),
           // name
           const Text(
-            'Nuhamad Anang',
+            'Muhamad Anang',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -103,12 +103,6 @@ class ProfileScreen extends StatelessWidget {
               title: 'Help',
               onTap: () {
                 // Help tap
-              }),
-          _buildMenuItem(
-              icon: Icons.support_agent,
-              title: 'Support',
-              onTap: () {
-                // Support tap
               }),
           const SizedBox(height: 24),
           Padding(
