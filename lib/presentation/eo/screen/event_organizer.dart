@@ -1,7 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/eo/screen/sales.dart';
 import 'package:fest_ticketing/presentation/eo/screen/upload_event.dart';
-import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
-import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
 
 class EventOrganizerScreen extends StatelessWidget {
@@ -81,8 +80,6 @@ class EventOrganizerScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-
-            // icons for navigation or additional options
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -111,12 +108,137 @@ class EventOrganizerScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            // event section tile
             const Text(
-              'Your Event ',
+              'Your Event',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Event List Section
+            Expanded(
+              child: ListView.builder(
+                itemCount: 2, // Jumlah event, bisa diubah sesuai data
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                'images/konser1.png', 
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    'TXT World Tour Act: Promise in Jkt',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    '22 Des - Jkt',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // Navigasi atau logika untuk Scan
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.red[50],
+                                backgroundColor: Colors.red,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text('Scan'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Navigasi atau logika untuk Edit
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.red[50],
+                                backgroundColor: Colors.red,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text('Edit'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Navigasi atau logika untuk Delete
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.red[50],
+                                backgroundColor: Colors.red,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ],
