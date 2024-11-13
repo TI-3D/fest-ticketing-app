@@ -1,6 +1,8 @@
 import 'package:fest_ticketing/presentation/eo/screen/event_organizer.dart';
+import 'package:fest_ticketing/presentation/profile/screen/history.dart';
+import 'package:fest_ticketing/presentation/profile/screen/mypayment.dart';
 import 'package:flutter/material.dart';
-import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -90,6 +92,12 @@ class ProfileScreen extends StatelessWidget {
             title: 'History',
             onTap: () {
               // Navigasi ke halaman History
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => History(),
+                ),
+              );
             },
           ),
           _buildMenuItem(
@@ -97,6 +105,12 @@ class ProfileScreen extends StatelessWidget {
               title: 'Paymemt',
               onTap: () {
                 // Payment tap
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Mypayment(),
+                  ),
+                );
               }),
           _buildMenuItem(
               icon: Icons.help_outline,
