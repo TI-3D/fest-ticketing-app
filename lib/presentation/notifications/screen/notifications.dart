@@ -1,3 +1,4 @@
+// notifications.dart
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/notifications/screen/notification_detail_page.dart';
 
@@ -32,7 +33,7 @@ class NotificationPage extends StatelessWidget {
         elevation: 0,
         titleTextStyle: const TextStyle(
           color: Colors.black,
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -66,45 +67,76 @@ class NotificationCard extends StatelessWidget {
   final bool isRead;
   final VoidCallback? onTap;
 
-  const NotificationCard(
-      {Key? key, required this.message, required this.isRead, this.onTap})
-      : super(key: key);
+  const NotificationCard({
+    Key? key,
+    required this.message,
+    required this.isRead,
+    this.onTap,
+  }) : super(key: key);
+
+  String _truncateMessage(String message, int maxWords) {
+    List<String> words = message.split(' ');
+    if (words.length > maxWords) {
+      return words.take(maxWords).join(' ') + '...';
+    }
+    return message;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey[200],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
-        leading: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            const Icon(
-              Icons.notifications_none,
-              size: 30,
-              color: Colors.black,
-            ),
-            if (!isRead)
-              const Positioned(
-                right: 0,
-                top: 0,
-                child: Icon(
-                  Icons.circle,
-                  color: Colors.red,
-                  size: 10,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.notifications_none,
+                size: 30,
+                color: Colors.grey.shade600,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _truncateMessage(message, 10),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    if (!isRead)
+                      const SizedBox(height: 8),
+                    if (!isRead)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          "Unread",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-          ],
-        ),
-        title: Text(
-          message,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+            ],
           ),
         ),
-        dense: true,
-        onTap: onTap,
       ),
     );
   }
