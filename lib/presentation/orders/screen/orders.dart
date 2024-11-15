@@ -22,7 +22,7 @@ class OrdersPage extends StatelessWidget {
     {
       "orderId": "Day6 : FOREVER YOUNG",
       "date": "10 - 14 - 2024",
-      "status": "Finished"
+      "status": "Canceled"
     },
   ];
 
@@ -97,9 +97,6 @@ class OrderCard extends StatelessWidget {
       case "Canceled":
         statusColor = Colors.red;
         break;
-      case "Finished":
-        statusColor = Colors.blue;
-        break;
       default:
         statusColor = Colors.grey;
     }
@@ -120,7 +117,7 @@ class OrderCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(117, 117, 117, 1),
+                  color: Color.fromRGBO(0, 0, 0, 1),
                 ),
               ),
               const SizedBox(height: 4),
