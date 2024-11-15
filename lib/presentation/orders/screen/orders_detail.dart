@@ -1,6 +1,5 @@
-// orders_detail.dart
 import 'package:flutter/material.dart';
-import 'ticket.dart'; // Pastikan ini adalah halaman ticket yang benar
+import 'ticket.dart'; 
 
 class OrdersDetailsPage extends StatelessWidget {
   final Map<String, dynamic> order;
@@ -10,7 +9,7 @@ class OrdersDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -38,40 +37,58 @@ class OrdersDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Card(
-              color: Colors.white70,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(8.0),
-                leading: Image.network(
-                  'https://via.placeholder.com/60', // Ganti dengan URL gambar Anda
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.broken_image,
-                      size: 60,
-                      color: Colors.grey[300],
-                    );
-                  },
-                ),
-                title: Text(
-                  order['orderId'] ?? 'Unknown Order',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                subtitle: const Text(
-                  'Class - GA',
-                  style: TextStyle(color: Colors.black),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        'https://via.placeholder.com/60', // Ganti dengan URL gambar Anda
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.broken_image,
+                            size: 60,
+                            color: Colors.grey[300],
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            order['orderId'] ?? 'Unknown Order',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            'Class - GA',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             const SizedBox(height: 8),
             Card(
-              color: Colors.white70,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -87,82 +104,29 @@ class OrdersDetailsPage extends StatelessWidget {
                     ),
                     const Divider(),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          'Order Detail ID:',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          '12343242344134',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    _buildDetailRow('Order Detail ID:', '12343242344134'),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          'Validity Period',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          '10 Feb 2024',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    _buildDetailRow('Validity Period:', '10 Feb 2024'),
                     const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () {
-                          // Tambahkan tindakan yang ingin dilakukan saat "Details" diklik
-                          print("Details clicked");
-                        },
-                        child: Text(
-                          'Details',
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          'Contact Info',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Text(
-                          'Muhammad Anang',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    _buildDetailRow('Contact Info:', 'Muhammad Anang'),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 16),
             Card(
-              color: Colors.white70,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               child: ListTile(
                 title: const Text('Tickets details'),
                 trailing: const Icon(Icons.arrow_forward),
                 onTap: () {
-                  // Navigasi ke halaman Ticket
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            Ticket()), // Pastikan Ticket adalah widget yang benar
+                      builder: (context) =>
+                          Ticket(), // Pastikan Ticket adalah widget yang benar
+                    ),
                   );
                 },
               ),
@@ -170,6 +134,22 @@ class OrdersDetailsPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(color: Colors.grey),
+        ),
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }
