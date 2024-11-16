@@ -1,11 +1,11 @@
 import 'package:fest_ticketing/presentation/eo/screen/event_organizer.dart';
 import 'package:fest_ticketing/presentation/profile/screen/history.dart';
 import 'package:fest_ticketing/presentation/profile/screen/mypayment.dart';
+import 'package:fest_ticketing/presentation/profile/screen/help.dart';
 import 'package:flutter/material.dart';
 
-
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +113,18 @@ class ProfileScreen extends StatelessWidget {
                 );
               }),
           _buildMenuItem(
-              icon: Icons.help_outline,
-              title: 'Help',
-              onTap: () {
-                // Help tap
-              }),
+            icon: Icons.help_outline,
+            title: 'Help',
+            onTap: () {
+              // Help tap
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HelpScreen(),
+                ),
+              );
+            },
+          ),
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
