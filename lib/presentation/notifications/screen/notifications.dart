@@ -21,7 +21,7 @@ class NotificationPage extends StatelessWidget {
     },
   ];
 
-  NotificationPage({Key? key}) : super(key: key);
+  NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,10 @@ class NotificationPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Notifications"),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.red,
         elevation: 0,
         titleTextStyle: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
@@ -68,16 +68,16 @@ class NotificationCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const NotificationCard({
-    Key? key,
+    super.key,
     required this.message,
     required this.isRead,
     this.onTap,
-  }) : super(key: key);
+  });
 
   String _truncateMessage(String message, int maxWords) {
     List<String> words = message.split(' ');
     if (words.length > maxWords) {
-      return words.take(maxWords).join(' ') + '...';
+      return '${words.take(maxWords).join(' ')}...';
     }
     return message;
   }
