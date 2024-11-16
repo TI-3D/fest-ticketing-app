@@ -1,5 +1,6 @@
 import 'package:fest_ticketing/presentation/eo/screen/event_organizer.dart';
 import 'package:fest_ticketing/presentation/profile/screen/history.dart';
+import 'package:fest_ticketing/presentation/profile/screen/editprofile.dart';
 import 'package:fest_ticketing/presentation/profile/screen/mypayment.dart';
 import 'package:fest_ticketing/presentation/profile/screen/help.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,15 @@ class ProfileScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              // Navigasi ke halaman Edit Profile
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfilePage(),
+                ),
+              );
+            },
             child: const Text(
               'Edit',
               style: TextStyle(
