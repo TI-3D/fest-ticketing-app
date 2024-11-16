@@ -26,7 +26,7 @@ class OrdersPage extends StatelessWidget {
     },
   ];
 
-  OrdersPage({Key? key}) : super(key: key);
+  OrdersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +34,10 @@ class OrdersPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Orders"),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.red,
         elevation: 0,
         titleTextStyle: TextStyle(
-          color: Colors.grey.shade600,
+          color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
@@ -77,12 +77,12 @@ class OrderCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const OrderCard({
-    Key? key,
+    super.key,
     required this.orderId,
     required this.date,
     required this.status,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
