@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
-import 'ticket.dart'; 
+import 'ticket.dart';
 
 class OrdersDetailsPage extends StatelessWidget {
   final Map<String, dynamic> order;
 
-  const OrdersDetailsPage({Key? key, required this.order}) : super(key: key);
+  const OrdersDetailsPage({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.red,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.grey[600],
+            color: Colors.white,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
           'Order #454809',
           style: TextStyle(
-            color: Color.fromRGBO(117, 117, 117, 1),
+            color: Color.fromRGBO(255, 255, 255, 1),
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
