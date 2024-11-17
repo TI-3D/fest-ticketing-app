@@ -1,3 +1,4 @@
+import 'package:fest_ticketing/presentation/home/screen/home.dart';
 import 'package:flutter/material.dart';
 
 class Ticket extends StatelessWidget {
@@ -19,14 +20,16 @@ class Ticket extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.close, color: Colors.white),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
             },
           ),
         ],
       ),
       body: Center(
         child: Container(
-
           margin: const EdgeInsets.all(24),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -83,12 +86,12 @@ class Ticket extends StatelessWidget {
               _buildTicketInfoRow('Grade', 'VIP'),
               _buildTicketInfoRow('Amount', '1'),
               _buildTicketInfoRow('Payment', 'Dana'),
-              _buildTicketInfoRow('Total', 'Rp 1.000.000', isBold:true),
+              _buildTicketInfoRow('Total', 'Rp 1.000.000', isBold: true),
               const SizedBox(height: 24),
 
               // barcode
               Image.asset(
-                '/images/barcode.png', 
+                '/images/barcode.png',
                 height: 80,
               ),
               const SizedBox(height: 16),
@@ -120,7 +123,8 @@ class Ticket extends StatelessWidget {
     );
   }
 
-  Widget _buildTicketInfoRow(String label, String value, {bool isBold = false}) {
+  Widget _buildTicketInfoRow(String label, String value,
+      {bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(

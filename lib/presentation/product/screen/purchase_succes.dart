@@ -1,3 +1,4 @@
+import 'package:fest_ticketing/presentation/home/screen/home.dart';
 import 'package:fest_ticketing/presentation/orders/screen/ticket.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,19 @@ class PurchaseSucces extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red[700],
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.close, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
