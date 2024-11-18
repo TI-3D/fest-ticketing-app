@@ -1,3 +1,4 @@
+import 'package:fest_ticketing/presentation/admin/home/screen/home.dart';
 import 'package:fest_ticketing/presentation/eo/screen/event_organizer.dart';
 import 'package:fest_ticketing/presentation/profile/screen/history.dart';
 import 'package:fest_ticketing/presentation/profile/screen/editprofile.dart';
@@ -138,7 +139,14 @@ class ProfileScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AdminDashboardScreen(),
+                ),
+              );
+              },
               child: const Text(
                 'Sign Out',
                 style: TextStyle(
