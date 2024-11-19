@@ -23,6 +23,10 @@ class AppColor {
   static const Color textBlack = Color(0xFF000000);
   static const Color textWhite = Color(0xFFFFFFFF);
 
-  static const Color warning = Color(0xFFEDAB00);
+  // Accent colors (for additional usage)
+  static const Color success = Color(0xFF28A745); // Green for success messages
+  static const Color error = Color(0xFFDC3545); // Red for errors
+  static const Color info = Color(0xFF17A2B8); // Blue for information
 
+  static const Color warning = Color(0xFFEDAB00);
 }

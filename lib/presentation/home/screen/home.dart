@@ -2,7 +2,6 @@ import 'package:fest_ticketing/presentation/category/screen/category.dart';
 import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
 import 'package:fest_ticketing/presentation/profile/screen/profile.dart';
-import 'package:fest_ticketing/presentation/notifications/screen/notifications.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,7 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           title: Row(
-            children: [            
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()),
+                  );
+                },
+                child: const CircleAvatar(
+                  backgroundColor: Color(0xFFE0E0E0),
+                  child: Icon(Icons.person, color: Colors.grey),
+                ),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),

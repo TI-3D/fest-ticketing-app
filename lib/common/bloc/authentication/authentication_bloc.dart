@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             SigninRequestParams(email: event.email, password: event.password));
     result.fold(
       (error) {
-        emit(Unauthenticated(message: error.toString()));
+        emit(AuthError(message: error.toString()));
       },
       (data) async {
         print("data: $data - ${data.runtimeType}");
@@ -42,7 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     await result.fold(
       (error) {
-        emit(Unauthenticated(message: error.toString()));
+        emit(AuthError(message: error.toString()));
       },
       (data) async {
         emit(Unauthenticated(message: "Signed out successfully"));
@@ -58,7 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     await result.fold(
       (error) {
-        emit(Unauthenticated(message: error.toString()));
+        emit(AuthError(message: error.toString()));
       },
       (data) async {
         final user = data as UserEntity;

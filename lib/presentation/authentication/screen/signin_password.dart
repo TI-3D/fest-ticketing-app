@@ -22,11 +22,25 @@ class SigninPasswordScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          SnackBar snackBar = SnackBar(
+          // Show a Snackbar with a welcome message
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Welcome, ${state.user.fullName}'),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          AppNavigator.pushReplacement(context, MainMenuScreen());
+          ));
+          Future.delayed(Duration(seconds: 1), () {
+            // Navigate to the Main Menu screen after successful login
+            AppNavigator.pushAndRemoveUntil(
+              context,
+              const MainMenuScreen(),
+              (_) => false, // This removes all previous screens from the stack
+            );
+          });
+        }
+
+        if (state is AuthError) {
+          // Show a Snackbar with the error message
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(state.message),
+          ));
         }
       },
       child: Scaffold(
@@ -83,11 +97,10 @@ class SigninPasswordScreen extends StatelessWidget {
         }
         return BasicAppButton(
           onPressed: () {
+            // Dispatch SignInEvent and wait for the AuthBloc to handle the response
             context
                 .read<AuthBloc>()
                 .add(SignInEvent(email, _passwordController.text));
-
-            AppNavigator.pushReplacement(context, const MainMenuScreen());
           },
           title: 'Continue',
         );
@@ -107,6 +120,7 @@ class SigninPasswordScreen extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
+            // Navigate to forgot password screen
             AppNavigator.pushReplacement(context, ForgotPasswordScreen());
           },
           child: Text(
