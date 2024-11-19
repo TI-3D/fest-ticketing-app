@@ -1,7 +1,8 @@
+import 'package:fest_ticketing/common/bloc/authentication/authentication_bloc.dart';
+import 'package:fest_ticketing/common/bloc/authentication/authentication_event.dart';
 import 'package:fest_ticketing/core/config/themes/app_theme.dart';
 import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
 import 'package:fest_ticketing/firebase_options.dart';
-import 'package:fest_ticketing/presentation/splash/bloc/splash_cubit.dart';
 import 'package:fest_ticketing/presentation/splash/screen/splash.dart';
 import 'package:fest_ticketing/service_locator.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,11 +22,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      // create: (context) => SplashCubit()..init(),
       providers: [
-        BlocProvider(
-          create: (context) => SplashCubit()..init(),
-        ),
+        BlocProvider(create: (context) => AuthBloc()),
         BlocProvider(create: (context) => MainMenuBloc()),
       ],
       child: MaterialApp(

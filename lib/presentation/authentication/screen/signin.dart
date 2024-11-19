@@ -12,11 +12,24 @@ class SigninScreen extends StatelessWidget {
   SigninScreen({super.key});
 
   final TextEditingController _emailController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an email';
+    }
+    String pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter a valid email address';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BasicAppbar(hideBack: true),
+      appBar: const BasicAppbar(hideBack: false),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: AppSize.defaultSpace),
@@ -25,9 +38,7 @@ class SigninScreen extends StatelessWidget {
             children: [
               _buildTitle(context),
               const SizedBox(height: AppSize.spaceBtwInputFields),
-              _buildEmailField(context),
-              const SizedBox(height: AppSize.spaceBtwInputFields),
-              _buildButtonContinue(context),
+              _buildForm(context),
               const SizedBox(height: AppSize.spaceBtwInputFields),
               _buildDoNotHaveAccount(context),
               const SizedBox(height: AppSize.spaceBtwSections),
@@ -50,17 +61,40 @@ class SigninScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmailField(BuildContext context) {
+  Widget _buildForm(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          _buildEmailField(),
+          const SizedBox(height: AppSize.spaceBtwInputFields),
+          _buildButtonContinue(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmailField() {
     return TextFormField(
       controller: _emailController,
       decoration: const InputDecoration(hintText: 'Email'),
+      validator: _validateEmail,
     );
   }
 
   Widget _buildButtonContinue(BuildContext context) {
     return BasicAppButton(
       onPressed: () {
-        AppNavigator.push(context, SigninPasswordScreen(email: ""));
+        // Trigger form validation
+        if (_formKey.currentState?.validate() ?? false) {
+          // If form is valid, pass email to next screen
+          AppNavigator.push(
+            context,
+            SigninPasswordScreen(
+              email: _emailController.text, // Pass the email to next screen
+            ),
+          );
+        }
       },
       title: 'Continue',
     );
@@ -98,14 +132,12 @@ class SigninScreen extends StatelessWidget {
         print('Sign in with Google');
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColor.grey.withOpacity(0.1), // Background color
+        backgroundColor: AppColor.grey.withOpacity(0.1),
         shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(AppSize.buttonRadiusCircular), // Pill shape
+          borderRadius: BorderRadius.circular(AppSize.buttonRadiusCircular),
         ),
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        minimumSize:
-            const Size(double.infinity, 50), // Full width, min height 50
+        minimumSize: const Size(double.infinity, 50),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
@@ -118,7 +150,7 @@ class SigninScreen extends StatelessWidget {
               width: 24,
               height: 24,
             ),
-            const SizedBox(width: 8), // Space between icon and text
+            const SizedBox(width: 8),
             Text(
               'Sign in with Google',
               style: Theme.of(context).textTheme.titleSmall!.copyWith(

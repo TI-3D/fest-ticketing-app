@@ -26,7 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BasicAppbar(hideBack: true),
+      appBar: const BasicAppbar(hideBack: false),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: AppSize.defaultSpace),

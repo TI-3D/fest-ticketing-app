@@ -1,4 +1,7 @@
+import 'package:fest_ticketing/common/bloc/authentication/authentication_bloc.dart';
+import 'package:fest_ticketing/common/bloc/authentication/authentication_state.dart';
 import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
+import 'package:fest_ticketing/presentation/authentication/screen/signin.dart';
 import 'package:fest_ticketing/presentation/home/screen/home.dart';
 import 'package:fest_ticketing/presentation/notifications/screen/notifications.dart';
 import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
@@ -40,7 +43,16 @@ class MainMenuScreen extends StatelessWidget {
             selectedItemColor: Theme.of(context).colorScheme.primary,
             unselectedItemColor: Colors.grey,
             onTap: (index) {
-              BlocProvider.of<MainMenuBloc>(context).add(ChangeTabEvent(index));
+              if (index == 3) {
+                BlocProvider.of<AuthBloc>(context).state is Unauthenticated
+                    ? Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SigninScreen()))
+                    : BlocProvider.of<MainMenuBloc>(context)
+                        .add(ChangeTabEvent(index));
+              } else {
+                BlocProvider.of<MainMenuBloc>(context)
+                    .add(ChangeTabEvent(index));
+              }
             },
           ),
         );
