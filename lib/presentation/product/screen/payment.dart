@@ -1,6 +1,8 @@
 import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fest_ticketing/core/constant/color.dart';
+
 
 class Payment extends StatelessWidget {
   final double totalAmount;
@@ -111,7 +113,7 @@ class Payment extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: AppColor.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),

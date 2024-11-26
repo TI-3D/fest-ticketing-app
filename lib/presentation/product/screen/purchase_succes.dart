@@ -1,6 +1,7 @@
 import 'package:fest_ticketing/presentation/home/screen/home.dart';
 import 'package:fest_ticketing/presentation/orders/screen/ticket.dart';
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/core/constant/color.dart';
 
 class PurchaseSucces extends StatelessWidget {
   const PurchaseSucces({Key? key}) : super(key: key);
@@ -8,18 +9,15 @@ class PurchaseSucces extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red[700],
+      backgroundColor: AppColor.primary,
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.close, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-              );
-            },
-          ),
+              icon: const Icon(Icons.close, color: Colors.white),
+              // dikembalikan ke home screen
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              }),
         ],
       ),
       body: Center(
@@ -74,7 +72,7 @@ class PurchaseSucces extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppColor.primary,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 12),
                       shape: RoundedRectangleBorder(

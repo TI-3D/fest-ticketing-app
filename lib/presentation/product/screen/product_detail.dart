@@ -1,5 +1,7 @@
 import 'package:fest_ticketing/presentation/product/screen/checkout.dart';
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/core/constant/color.dart';
+
 
 class ProductDetailScreen extends StatelessWidget {
   final String title;
@@ -25,14 +27,6 @@ class ProductDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.grey),
-            onPressed: () {
-              // Logic to add to favorites
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -74,7 +68,7 @@ class ProductDetailScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red,
+                  color: AppColor.primary,
                 ),
               ),
               const SizedBox(height: 16),
@@ -138,7 +132,7 @@ class ProductDetailScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () => _showBookingOptions(context),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
+            backgroundColor: AppColor.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
@@ -271,7 +265,7 @@ class ProductDetailScreen extends StatelessWidget {
                         ); // Close the modal
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: AppColor.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),

@@ -20,10 +20,7 @@ class Ticket extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.close, color: Colors.white),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-              );
+              Navigator.popUntil(context, (route) => route.isFirst);
             },
           ),
         ],
