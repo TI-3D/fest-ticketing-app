@@ -4,6 +4,10 @@ import 'package:fest_ticketing/common/helpers/navigator/app_navigator.dart';
 import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
 import 'package:fest_ticketing/core/main_menu/screen/main_menu.dart';
 import 'package:fest_ticketing/domain/authentication/enities/user.dart';
+import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
+import 'package:fest_ticketing/presentation/profile/screen/help.dart';
+import 'package:fest_ticketing/presentation/profile/screen/history.dart';
+import 'package:fest_ticketing/presentation/profile/screen/mypayment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fest_ticketing/common/bloc/authentication/authentication_bloc.dart';
@@ -82,6 +86,21 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
+                _buildMenuItem(
+                  icon: Icons.install_mobile_sharp,
+                  title: 'Request Event Organizer',
+                  onTap: () {
+                    // Navigate to Event Organizer page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EventRequestPage(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+                
                 // Menu items
                 _buildMenuItem(
                   icon: Icons.theater_comedy,
@@ -96,33 +115,46 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 24),
                 // Additional Menu items
                 _buildMenuItem(
                   icon: Icons.list,
                   title: 'History',
                   onTap: () {
                     // Navigate to History page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => History(),
+                      ),
+                    );
                   },
                 ),
+                // _buildMenuItem(
+                //   icon: Icons.payment,
+                //   title: 'Payment',
+                //   onTap: () {
+                //     // Payment tap
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => Mypayment(),
+                //       ),
+                //     );
+                //   },
+                // ),
                 _buildMenuItem(
-                    icon: Icons.payment,
-                    title: 'Payment',
-                    onTap: () {
-                      // Payment tap
-                    }),
-                _buildMenuItem(
-                    icon: Icons.help_outline,
-                    title: 'Help',
-                    onTap: () {
-                      // Help tap
-                    }),
-                _buildMenuItem(
-                    icon: Icons.support_agent,
-                    title: 'Support',
-                    onTap: () {
-                      // Support tap
-                    }),
+                  icon: Icons.help_outline,
+                  title: 'Help',
+                  onTap: () {
+                    // Help tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HelpScreen(),
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

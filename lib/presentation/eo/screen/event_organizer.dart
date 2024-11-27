@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/eo/screen/sales.dart';
 import 'package:fest_ticketing/presentation/eo/screen/upload_event.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
-
+import 'package:fest_ticketing/core/constant/color.dart';
 class EventOrganizerScreen extends StatelessWidget {
   const EventOrganizerScreen({Key? key}) : super(key: key);
 
@@ -185,7 +185,7 @@ class EventOrganizerScreen extends StatelessWidget {
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.red[50],
-                                backgroundColor: Colors.red,
+                                backgroundColor: AppColor.primary,
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -203,7 +203,7 @@ class EventOrganizerScreen extends StatelessWidget {
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.red[50],
-                                backgroundColor: Colors.red,
+                                backgroundColor: AppColor.primary,
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -221,7 +221,7 @@ class EventOrganizerScreen extends StatelessWidget {
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.red[50],
-                                backgroundColor: Colors.red,
+                                backgroundColor: AppColor.primary,
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,

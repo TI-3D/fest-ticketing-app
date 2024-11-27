@@ -79,7 +79,8 @@ class _CheckoutState extends State<Checkout> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const Divider(height: 32, color: Colors.grey),
+
                 // Detail Event
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,18 +93,13 @@ class _CheckoutState extends State<Checkout> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Event Details',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 8),
                           _buildDetailEvent(
                               'Date', 'Friday, December 15, 2024'),
                           const SizedBox(height: 8),
                           _buildDetailEvent(
                               'Location', 'Istora Senayan, Jakarta'),
                           const SizedBox(height: 8),
-                          _buildDetailEvent(
-                              'Time', '19:00 - 22:00'),
+                          _buildDetailEvent('Time', '19:00 - 22:00'),
                         ],
                       ),
                     ),

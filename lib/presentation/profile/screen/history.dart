@@ -1,5 +1,6 @@
 import 'package:fest_ticketing/presentation/orders/screen/ticket.dart';
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/core/constant/color.dart';
 
 class History extends StatelessWidget {
   const History({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class History extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('History'),
-        backgroundColor: Colors.red,
+        backgroundColor: AppColor.primary,
         centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.white,
@@ -116,7 +117,7 @@ class History extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                          backgroundColor: AppColor.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

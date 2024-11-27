@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:fest_ticketing/core/constant/color.dart';
 class UploadEventScreen extends StatelessWidget {
   const UploadEventScreen({Key? key}) : super(key: key);
 
@@ -174,7 +174,8 @@ class UploadEventScreen extends StatelessWidget {
                     },
                     child: const Text(
                       '+ New Grade',
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: AppColor.primary),
+                      
                     ),
                   ),
                 ],
@@ -190,7 +191,7 @@ class UploadEventScreen extends StatelessWidget {
                   // Logic untuk mengunggah event
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColor.primary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

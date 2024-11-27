@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/core/constant/color.dart';
 
 class Mypayment extends StatelessWidget {
   const Mypayment({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class Mypayment extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Payment Methods'),
-        backgroundColor: Colors.red,
+        backgroundColor: AppColor.primary,
         centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.white,
@@ -43,7 +44,7 @@ class Mypayment extends StatelessWidget {
                         index == 0
                             ? Icons.account_balance_wallet
                             : Icons.credit_card,
-                        color: Colors.red,
+                        color: AppColor.primary,
                       ),
                       title: Text(
                         index == 0
@@ -67,7 +68,7 @@ class Mypayment extends StatelessWidget {
                       trailing: IconButton(
                         icon: const Icon(
                           Icons.delete,
-                          color: Colors.red,
+                          color: AppColor.primary,
                         ),
                         onPressed: () {
                           // Tindakan untuk menghapus metode pembayaran
@@ -89,10 +90,10 @@ class Mypayment extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: AppColor.primary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
             ),
