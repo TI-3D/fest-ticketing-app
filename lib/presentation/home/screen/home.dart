@@ -3,6 +3,8 @@ import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
 import 'package:fest_ticketing/presentation/profile/screen/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/core/constant/color.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,19 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           title: Row(
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProfileScreen()),
-                  );
-                },
-                child: const CircleAvatar(
-                  backgroundColor: Color(0xFFE0E0E0),
-                  child: Icon(Icons.person, color: Colors.grey),
-                ),
-              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -66,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(
                   Icons.category,
-                  color: Colors.red,
+                  color: AppColor.primary,
                   size: screenSize.width * 0.06,
                 ),
                 onPressed: () =>
@@ -156,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       backgroundColor: Colors.grey[300],
                       child: Icon(
                         Icons.music_note,
-                        color: Colors.red,
+                        color: AppColor.primary,
                         size: screenSize.width * 0.05,
                       ),
                     ),
@@ -213,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: const Text(
                     'See All',
                     style: TextStyle(
-                      color: Colors.red,
+                      color: AppColor.primary,
                       fontSize: 14,
                     ),
                   ),

@@ -34,10 +34,9 @@ class OrdersPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Orders"),
         centerTitle: true,
-        backgroundColor: Colors.red,
         elevation: 0,
         titleTextStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.black,
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),

@@ -2,6 +2,7 @@ import 'package:fest_ticketing/presentation/product/screen/payment.dart';
 import 'package:fest_ticketing/presentation/product/screen/payment_method.dart';
 import 'package:fest_ticketing/presentation/product/screen/purchase_succes.dart';
 import 'package:flutter/material.dart';
+import 'package:fest_ticketing/core/constant/color.dart';
 
 class Checkout extends StatefulWidget {
   final String ticketClass;
@@ -42,20 +43,73 @@ class _CheckoutState extends State<Checkout> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ListTile(
-                  leading: Image.asset('images/konser1.png', width: 60),
-                  title: const Text('TXT World Tour Act: Promise in Jakarta'),
-                  subtitle: Text('Class - ${widget.ticketClass}'),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Image.asset(
+                        'images/konser1.png', // Replace with the correct image path
+                        width: 100,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'TXT World Tour Act: Promise in Jakarta',
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            'Class - ${widget.ticketClass}',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+                const Divider(height: 32, color: Colors.grey),
+
+                // Detail Event
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildDetailEvent(
+                              'Date', 'Friday, December 15, 2024'),
+                          const SizedBox(height: 8),
+                          _buildDetailEvent(
+                              'Location', 'Istora Senayan, Jakarta'),
+                          const SizedBox(height: 8),
+                          _buildDetailEvent('Time', '19:00 - 22:00'),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.4, // Ukuran awal sheet (40% dari tinggi layar)
+            initialChildSize: 0.5, // Ukuran awal sheet (40% dari tinggi layar)
             minChildSize: 0.2, // Ukuran minimum sheet (20% dari tinggi layar)
             maxChildSize: 0.8, // Ukuran maksimum sheet (80% dari tinggi layar)
             builder: (context, scrollController) {
@@ -88,7 +142,8 @@ class _CheckoutState extends State<Checkout> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Price Details',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 8),
                             _buildPriceRow('Subtotal',
                                 'Rp ${subtotal.toStringAsFixed(0)}'),
@@ -166,7 +221,7 @@ class _CheckoutState extends State<Checkout> {
                             } else {}
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
+                            backgroundColor: AppColor.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -186,6 +241,31 @@ class _CheckoutState extends State<Checkout> {
                 ),
               );
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailEvent(String label, String value, {bool isBold = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
           ),
         ],
       ),

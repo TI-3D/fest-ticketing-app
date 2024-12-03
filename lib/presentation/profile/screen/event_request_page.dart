@@ -27,22 +27,23 @@ class _EventRequestFormState extends State<EventRequestForm> {
 
   // Define controllers for other fields
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController profileController = TextEditingController();
 
   // Variable to store the selected image
-  File? _posterImage;
-  final ImagePicker _picker = ImagePicker();
+  // File? _posterImage;
+  // final ImagePicker _picker = ImagePicker();
 
   // Method to pick an image from the gallery or camera
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery); // or ImageSource.camera
-    if (pickedFile != null) {
-      setState(() {
-        _posterImage = File(pickedFile.path);
-      });
-    }
-  }
+  // Future<void> _pickImage() async {
+  //   final pickedFile = await _picker.pickImage(source: ImageSource.gallery); // or ImageSource.camera
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _posterImage = File(pickedFile.path);
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +58,19 @@ class _EventRequestFormState extends State<EventRequestForm> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Nama tidak boleh kosong';
+              }
+              return null;
+            },
+          ),
+          SizedBox(height: 16),
+          
+          // Email
+          TextFormField(
+            controller: emailController,
+            decoration: InputDecoration(labelText: 'Email'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Email tidak boleh kosong';
               }
               return null;
             },
@@ -79,7 +93,7 @@ class _EventRequestFormState extends State<EventRequestForm> {
           // Profil atau Link Website Perusahaan
           TextFormField(
             controller: profileController,
-            decoration: InputDecoration(labelText: 'Profil atau Link Website Perusahaan'),
+            decoration: InputDecoration(labelText: 'Deskripsikan Profil Perusahaan, bisa sertakan Link Pendukung Profil Perusahaan'),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Profil atau link website perusahaan tidak boleh kosong';
@@ -90,31 +104,31 @@ class _EventRequestFormState extends State<EventRequestForm> {
           SizedBox(height: 16),
 
           // Kebutuhan Poster (Upload Gambar)
-          Text(
-            'Kebutuhan Poster',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          _posterImage != null
-              ? Image.file(_posterImage!)  // Display selected image preview
-              : Text('Belum ada gambar yang dipilih'),
-          SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: _pickImage,
-            child: Text('Unggah Gambar'),
-          ),
+          // Text(
+          //   'Kebutuhan Poster',
+          //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          // ),
+          // SizedBox(height: 8),
+          // _posterImage != null
+          //     ? Image.file(_posterImage!)  // Display selected image preview
+          //     : Text('Belum ada gambar yang dipilih'),
+          // SizedBox(height: 8),
+          // ElevatedButton(
+          //   onPressed: _pickImage,
+          //   child: Text('Unggah Gambar'),
+          // ),
           SizedBox(height: 24),
 
           // Tombol Submit
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                if (_posterImage == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Silakan unggah gambar poster')),
-                  );
-                  return;
-                }
+                // if (_posterImage == null) {
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //     SnackBar(content: Text('Silakan unggah gambar poster')),
+                //   );
+                //   return;
+                // }
 
                 // Tampilkan konfirmasi pengiriman
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -123,14 +137,15 @@ class _EventRequestFormState extends State<EventRequestForm> {
 
                 // Clear form
                 nameController.clear();
+                emailController.clear();
                 addressController.clear();
                 profileController.clear();
-                setState(() {
-                  _posterImage = null;
-                });
+                // setState(() {
+                //   _posterImage = null;
+                // });
               }
             },
-            child: Text('Submit Request'),
+            child: Text('Submit Request', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -141,6 +156,7 @@ class _EventRequestFormState extends State<EventRequestForm> {
   void dispose() {
     // Dispose controllers to free resources
     nameController.dispose();
+    emailController.dispose();
     addressController.dispose();
     profileController.dispose();
     super.dispose();
