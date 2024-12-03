@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/eo/screen/sales.dart';
 import 'package:fest_ticketing/presentation/eo/screen/upload_event.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io'; // This is necessary for working with File
 
 class EventOrganizerScreen extends StatelessWidget {
   const EventOrganizerScreen({Key? key}) : super(key: key);
@@ -144,7 +146,7 @@ class EventOrganizerScreen extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.asset(
-                                'images/konser1.png', 
+                                'images/konser1.png',
                                 width: 60,
                                 height: 60,
                                 fit: BoxFit.cover,
@@ -180,8 +182,29 @@ class EventOrganizerScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ElevatedButton(
-                              onPressed: () {
-                                // Navigasi atau logika untuk Scan
+                              onPressed: () async {
+                                final picker = ImagePicker();
+
+                                // Pick an image from gallery
+                                final pickedFile = await picker.pickImage(
+                                    source: ImageSource.gallery);
+
+                                if (pickedFile != null) {
+                                  // Display picked image or handle further
+                                  File image = File(pickedFile.path);
+
+                                  // Here you can use the image file in your app logic
+                                  // For example, you can navigate to another screen to display the image:
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImagePickerScreen(),
+                                    ),
+                                  );
+                                } else {
+                                  // Handle case where no image was picked
+                                  print('No image selected.');
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.red[50],
@@ -195,7 +218,8 @@ class EventOrganizerScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              child: const Text('Scan'),
+                              child: const Text(
+                                  'Scan'), // This is the part that triggers the image picker
                             ),
                             ElevatedButton(
                               onPressed: () {
@@ -247,3 +271,5 @@ class EventOrganizerScreen extends StatelessWidget {
     );
   }
 }
+
+ImagePickerScreen() {}

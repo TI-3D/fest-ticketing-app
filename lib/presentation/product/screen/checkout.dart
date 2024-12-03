@@ -101,7 +101,7 @@ class _CheckoutState extends State<Checkout> {
                           ],
                         ),
                       ),
-                      
+
                       const SizedBox(height: 16),
                       // Payment Method
                       ListTile(
@@ -159,8 +159,7 @@ class _CheckoutState extends State<Checkout> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PurchaseSucces()
-                                ),
+                                    builder: (context) => PurchaseSucces()),
                               );
                             } else if (selectedPaymentMethod == 'OVO') {
                               // OVO Payment

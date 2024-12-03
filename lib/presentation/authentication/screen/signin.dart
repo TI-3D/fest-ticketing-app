@@ -31,20 +31,56 @@ class SigninScreen extends StatelessWidget {
     return Scaffold(
       appBar: const BasicAppbar(hideBack: false),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: AppSize.defaultSpace),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTitle(context),
-              const SizedBox(height: AppSize.spaceBtwInputFields),
-              _buildForm(context),
-              const SizedBox(height: AppSize.spaceBtwInputFields),
-              _buildDoNotHaveAccount(context),
-              const SizedBox(height: AppSize.spaceBtwSections),
-              _buildGoogleSignInButton(context),
-            ],
-          ),
+        child: Column(
+          children: [
+            Center(
+              child: Image.asset(
+                'assets/images/logo.png', // Ganti dengan path logo Anda
+                width: 200,
+                height: 200,
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: AppSize.defaultSpace),
+              child: _buildTitle(context),
+            ),
+            const SizedBox(
+                height:
+                    AppSize.spaceBtwSections), // Jarak antara judul dan form
+            Container(
+              padding: const EdgeInsets.all(AppSize.defaultSpace),
+              margin:
+                  const EdgeInsets.symmetric(horizontal: AppSize.defaultSpace),
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? const Color.fromARGB(255, 230, 7, 7).withOpacity(0.1)
+                    : AppColor.white,
+                borderRadius: BorderRadius.circular(AppSize.cardRadiusXl),
+                boxShadow: [
+                  if (Theme.of(context).brightness != Brightness.dark)
+                    BoxShadow(
+                      color: AppColor.grey.withOpacity(0.2),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                ],
+              ),
+              child: _buildForm(context),
+            ),
+            const SizedBox(height: AppSize.spaceBtwSections),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: AppSize.defaultSpace),
+              child: _buildDoNotHaveAccount(context),
+            ),
+            const SizedBox(height: AppSize.spaceBtwSections),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: AppSize.defaultSpace),
+              child: _buildGoogleSignInButton(context),
+            ),
+          ],
         ),
       ),
     );
@@ -52,12 +88,35 @@ class SigninScreen extends StatelessWidget {
 
   Widget _buildTitle(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Text(
-      'Sign in',
-      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-            color: isDark ? AppColor.white : AppColor.black,
-            fontWeight: FontWeight.bold,
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Sign in',
+          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                color: isDark ? AppColor.white : AppColor.black,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Selamat Datang Di FastTicket!',
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                color: isDark
+                    ? AppColor.white.withOpacity(0.7)
+                    : AppColor.black.withOpacity(0.7),
+              ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Login atau Register Sekarang untuk menikmati semua fitur yang tersedia di FastTicket',
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: isDark
+                    ? AppColor.white.withOpacity(0.7)
+                    : AppColor.black.withOpacity(0.7),
+              ),
+        ),
+      ],
     );
   }
 
@@ -85,13 +144,11 @@ class SigninScreen extends StatelessWidget {
   Widget _buildButtonContinue(BuildContext context) {
     return BasicAppButton(
       onPressed: () {
-        // Trigger form validation
         if (_formKey.currentState?.validate() ?? false) {
-          // If form is valid, pass email to next screen
           AppNavigator.push(
             context,
             SigninPasswordScreen(
-              email: _emailController.text, // Pass the email to next screen
+              email: _emailController.text,
             ),
           );
         }
