@@ -276,7 +276,7 @@ class _SigninScreenState extends State<SigninScreen>
                   Text('Email verified successfully!'),
                 ],
               ),
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.blue,
               duration: Duration(seconds: 2),
             ),
           );

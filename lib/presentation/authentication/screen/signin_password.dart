@@ -376,7 +376,7 @@ class _SigninPasswordScreenState extends State<SigninPasswordScreen>
             Text('Welcome back, $fullName!'),
           ],
         ),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.all(16),
         shape: RoundedRectangleBorder(
