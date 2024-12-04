@@ -73,6 +73,9 @@ dependencies:
 
   # Flutter secure storage
   flutter_secure_storage: ^9.2.2
+
+  # url 
+  url_launcher: ^6.1.14
   
 
 dev_dependencies:

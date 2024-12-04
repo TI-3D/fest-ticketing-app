@@ -180,6 +180,8 @@
 //   }
 // }
 
+import 'package:fest_ticketing/presentation/profile/screen/help_support.dart';
+import 'package:fest_ticketing/presentation/profile/screen/term_and_condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fest_ticketing/common/bloc/authentication/authentication_bloc.dart';
@@ -189,6 +191,7 @@ import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
 import 'package:fest_ticketing/common/helpers/navigator/app_navigator.dart';
 import 'package:fest_ticketing/core/main_menu/screen/main_menu.dart';
 import 'package:fest_ticketing/presentation/eo/screen/event_organizer.dart';
+import 'package:fest_ticketing/presentation/profile/screen/editprofile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -305,7 +308,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           GestureDetector(
             onTap: () {
-              // Edit profile functionality
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfilePage(),
+                ),
+              );
             },
             child: Container(
               padding: EdgeInsets.all(10),
@@ -358,10 +366,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         SizedBox(height: 15),
         _buildProfileMenuItem(
+          icon: Icons.description,
+          title: 'Term & Condition',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TermsAndConditionsScreen()),
+          ),
+        ),
+        SizedBox(height: 15),
+        _buildProfileMenuItem(
           icon: Icons.help_outline,
           title: 'Help & Support',
           onTap: () {
-            // Help page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const HelpSupportScreen()),
+            );
           },
         ),
       ],
