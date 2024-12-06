@@ -1,3 +1,5 @@
+import 'package:fest_ticketing/presentation/eo/screen/edit_event.dart';
+import 'package:fest_ticketing/presentation/eo/screen/event_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/eo/screen/sales.dart';
 import 'package:fest_ticketing/presentation/eo/screen/upload_event.dart';
@@ -124,142 +126,184 @@ class EventOrganizerScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 2, // Jumlah event, bisa diubah sesuai data
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EventDetailScreen(
+                            title: 'TXT World Tour Act: Promise in Jkt',
+                            artist: 'TXT',
+                            imagePath: 'images/konser1.png',
+                          ),
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.asset(
-                                'images/konser1.png',
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset(
+                                  'images/konser1.png',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    'TXT World Tour Act: Promise in Jkt',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                      'TXT World Tour Act: Promise in Jkt',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    '22 Des - Jkt',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
+                                    SizedBox(height: 4),
+                                    Text(
+                                      '22 Des - Jkt',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                final picker = ImagePicker();
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final picker = ImagePicker();
 
-                                // Pick an image from gallery
-                                final pickedFile = await picker.pickImage(
-                                    source: ImageSource.gallery);
+                                  // Pick an image from gallery
+                                  final pickedFile = await picker.pickImage(
+                                      source: ImageSource.gallery);
 
-                                if (pickedFile != null) {
-                                  // Display picked image or handle further
-                                  File image = File(pickedFile.path);
+                                  if (pickedFile != null) {
+                                    // Display picked image or handle further
+                                    File image = File(pickedFile.path);
 
-                                  // Here you can use the image file in your app logic
-                                  // For example, you can navigate to another screen to display the image:
+                                    // Here you can use the image file in your app logic
+                                    // For example, you can navigate to another screen to display the image:
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ImagePickerScreen(),
+                                      ),
+                                    );
+                                  } else {
+                                    // Handle case where no image was picked
+                                    print('No image selected.');
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.red[50],
+                                  backgroundColor: Colors.red,
+                                  elevation: 0,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Text(
+                                    'Scan'), // This is the part that triggers the image picker
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Data event yang akan diedit
+                                  final eventData = {
+                                    'photo':
+                                        'images/konser1.png', // Placeholder path gambar
+                                    'title': 'TXT World Tour Act: Promise in Jkt',
+                                    'location': 'Jkt',
+                                    'description': 'This is a description',
+                                    'date': '22 Des',
+                                    'grades': [
+                                      {
+                                        'grade': 'VIP',
+                                        'price': '1,000,000',
+                                        'stock': '100'
+                                      },
+                                      {
+                                        'grade': 'Regular',
+                                        'price': '500,000',
+                                        'stock': '200'
+                                      },
+                                    ],
+                                  };
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ImagePickerScreen(),
+                                      builder: (context) =>
+                                          EditEventScreen(eventData: eventData),
                                     ),
                                   );
-                                } else {
-                                  // Handle case where no image was picked
-                                  print('No image selected.');
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.red[50],
-                                backgroundColor: Colors.red,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.red[50],
+                                  backgroundColor: Colors.red,
+                                  elevation: 0,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                child: const Text('Edit'),
                               ),
-                              child: const Text(
-                                  'Scan'), // This is the part that triggers the image picker
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Navigasi atau logika untuk Edit
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.red[50],
-                                backgroundColor: Colors.red,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Navigasi atau logika untuk Delete
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.red[50],
+                                  backgroundColor: Colors.red,
+                                  elevation: 0,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                child: const Text('Delete'),
                               ),
-                              child: const Text('Edit'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Navigasi atau logika untuk Delete
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.red[50],
-                                backgroundColor: Colors.red,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

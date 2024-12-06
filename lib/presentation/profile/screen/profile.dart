@@ -181,6 +181,8 @@
 // }
 
 import 'package:fest_ticketing/presentation/profile/screen/help_support.dart';
+import 'package:fest_ticketing/presentation/profile/screen/history.dart';
+import 'package:fest_ticketing/presentation/profile/screen/mypayment.dart';
 import 'package:fest_ticketing/presentation/profile/screen/term_and_condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -354,6 +356,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: 'History',
           onTap: () {
             // Navigate to History page
+            Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => History(),
+                      ),
+                    );
           },
         ),
         SizedBox(height: 15),
@@ -362,6 +370,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: 'Payment Methods',
           onTap: () {
             // Payment methods page
+            Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Mypayment(),
+                      ),
+                    );
           },
         ),
         SizedBox(height: 15),
