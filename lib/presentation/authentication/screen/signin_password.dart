@@ -285,20 +285,13 @@ class _SigninPasswordScreenState extends State<SigninPasswordScreen>
             if (value == null || value.isEmpty) {
               return 'Please enter your password';
             }
-            if (value.length < 6) {
-              return 'Password must be at least 6 characters';
+            if (value.length < 8) {
+              return 'Password must be at least 8 characters';
             }
             return null;
           },
         ),
         const SizedBox(height: 8),
-        Text(
-          'Password must be at least 6 characters long',
-          style: TextStyle(
-            color: Colors.grey.shade600,
-            fontSize: 12,
-          ),
-        ),
       ],
     );
   }

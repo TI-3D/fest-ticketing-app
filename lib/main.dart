@@ -1,5 +1,4 @@
 import 'package:fest_ticketing/common/bloc/authentication/authentication_bloc.dart';
-import 'package:fest_ticketing/common/bloc/authentication/authentication_event.dart';
 import 'package:fest_ticketing/core/config/themes/app_theme.dart';
 import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
 import 'package:fest_ticketing/firebase_options.dart';

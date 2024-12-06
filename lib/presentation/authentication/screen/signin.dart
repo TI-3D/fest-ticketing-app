@@ -266,21 +266,6 @@ class _SigninScreenState extends State<SigninScreen>
     return ElevatedButton(
       onPressed: () {
         if (_formKey.currentState?.validate() ?? false) {
-          // Show success animation
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.check_circle, color: Colors.white),
-                  SizedBox(width: 8),
-                  Text('Email verified successfully!'),
-                ],
-              ),
-              backgroundColor: Colors.blue,
-              duration: Duration(seconds: 2),
-            ),
-          );
-
           // Navigate to password screen
           Future.delayed(Duration(seconds: 1), () {
             AppNavigator.push(
