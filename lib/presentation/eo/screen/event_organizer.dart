@@ -3,9 +3,7 @@ import 'package:fest_ticketing/presentation/eo/screen/event_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/eo/screen/sales.dart';
 import 'package:fest_ticketing/presentation/eo/screen/upload_event.dart';
-import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io'; // This is necessary for working with File
+import 'package:fest_ticketing/core/constant/color.dart';
 
 class EventOrganizerScreen extends StatelessWidget {
   const EventOrganizerScreen({Key? key}) : super(key: key);
@@ -197,33 +195,69 @@ class EventOrganizerScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ElevatedButton(
-                                onPressed: () async {
-                                  final picker = ImagePicker();
-
-                                  // Pick an image from gallery
-                                  final pickedFile = await picker.pickImage(
-                                      source: ImageSource.gallery);
-
-                                  if (pickedFile != null) {
-                                    // Display picked image or handle further
-                                    File image = File(pickedFile.path);
-
-                                    // Here you can use the image file in your app logic
-                                    // For example, you can navigate to another screen to display the image:
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ImagePickerScreen(),
-                                      ),
-                                    );
-                                  } else {
-                                    // Handle case where no image was picked
-                                    print('No image selected.');
-                                  }
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        title: const Text(
+                                          'Scan Participant',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context); // Menutup dialog
+                                                    // Logika pemindaian menggunakan Face
+                                                    print(
+                                                        "Scan with Face selected");
+                                                  },
+                                                  icon: const Icon(Icons.face,
+                                                      size: 40,
+                                                      color: AppColor.primary),
+                                                ),
+                                                const Text('Face'),
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context); // Menutup dialog
+                                                    // Logika pemindaian menggunakan Barcode
+                                                    print(
+                                                        "Scan with Barcode selected");
+                                                  },
+                                                  icon: const Icon(
+                                                      Icons.qr_code_scanner,
+                                                      size: 40,
+                                                      color: AppColor.primary),
+                                                ),
+                                                const Text('Code'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.red[50],
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: AppColor.primary,
                                   elevation: 0,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
@@ -242,7 +276,8 @@ class EventOrganizerScreen extends StatelessWidget {
                                   final eventData = {
                                     'photo':
                                         'images/konser1.png', // Placeholder path gambar
-                                    'title': 'TXT World Tour Act: Promise in Jkt',
+                                    'title':
+                                        'TXT World Tour Act: Promise in Jkt',
                                     'location': 'Jkt',
                                     'description': 'This is a description',
                                     'date': '22 Des',
@@ -270,7 +305,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.red[50],
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: AppColor.primary,
                                   elevation: 0,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
@@ -288,7 +323,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.red[50],
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: AppColor.primary,
                                   elevation: 0,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
