@@ -1,20 +1,18 @@
 import 'package:fest_ticketing/presentation/eo/screen/edit_event.dart';
-import 'package:fest_ticketing/presentation/product/screen/checkout.dart'; // Add this import
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
+import 'dart:io';
 
 class EventDetailScreen extends StatelessWidget {
   final String title;
   final String artist;
   final String imagePath;
-  // final double price;
 
   const EventDetailScreen({
     Key? key,
     required this.title,
     required this.artist,
     required this.imagePath,
-    // required this.price,
   }) : super(key: key);
 
   @override
@@ -62,15 +60,6 @@ class EventDetailScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // const SizedBox(height: 8),
-              // Text(
-              //   'Rp ${price.toStringAsFixed(0)}',
-              //   style: const TextStyle(
-              //     fontSize: 18,
-              //     fontWeight: FontWeight.bold,
-              //     color: AppColor.primary,
-              //   ),
-              // ),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -123,7 +112,6 @@ class EventDetailScreen extends StatelessWidget {
                 'Tomorrow X Together, umumnya dikenal sebagai TXT, adalah grup vokal pria asal Korea Selatan yang dibentuk oleh Big Hit Music. Grup ini terdiri dari lima anggota, antara lain: Soobin, Yeonjun, Beomgyu, Taehyun dan HueningKai. Mereka debut pada 4 Maret 2019 dengan album mini The Dream Chapter: Star',
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
-              
             ],
           ),
         ),
@@ -131,28 +119,33 @@ class EventDetailScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          // tombol edit event
           onPressed: () {
-            // Data event yang akan diedit
-            final eventData = {
-              'photo': 'images/konser1.png', // Placeholder path gambar
-              'title': 'TXT World Tour Act: Promise in Jkt',
-              'location': 'Jkt',
-              'description': 'This is a description',
-              'date': '22 Des',
-              'grades': [
-                {'grade': 'VIP', 'price': '1,000,000', 'stock': '100'},
-                {'grade': 'Regular', 'price': '500,000', 'stock': '200'},
-              ],
-            };
-
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => EditEventScreen(eventData: eventData),
+                builder: (context) => EditEventScreen(
+                  initialTitle: 'TXT World Tour Act: Promise in Jkt',
+                  initialLocation: 'Jkt',
+                  initialDescription: 'This is a description',
+                  initialDate: '22 Des',
+                  initialGrades: [
+                    {'grade': 'VIP', 'price': '1,000,000', 'stock': '100'},
+                    {'grade': 'Regular', 'price': '500,000', 'stock': '200'},
+                  ],
+                  initialImages: [
+                    File('assets/images/konser1.png'),
+                  ],
+                ),
               ),
             );
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColor.primary,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
           child: const Text(
             'Edit',
             style: TextStyle(

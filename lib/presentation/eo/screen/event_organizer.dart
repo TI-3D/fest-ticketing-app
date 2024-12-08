@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/eo/screen/edit_event.dart';
 import 'package:fest_ticketing/presentation/eo/screen/event_detail.dart';
-import 'package:flutter/material.dart';
 import 'package:fest_ticketing/presentation/eo/screen/sales.dart';
 import 'package:fest_ticketing/presentation/eo/screen/upload_event.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
+import 'dart:io';
 
 class EventOrganizerScreen extends StatelessWidget {
   const EventOrganizerScreen({Key? key}) : super(key: key);
@@ -132,7 +133,8 @@ class EventOrganizerScreen extends StatelessWidget {
                           builder: (context) => EventDetailScreen(
                             title: 'TXT World Tour Act: Promise in Jkt',
                             artist: 'TXT',
-                            imagePath: 'images/konser1.png',
+                            imagePath:
+                                'assets/images/konser1.png', // Pastikan gambar ada di folder assets
                           ),
                         ),
                       );
@@ -159,7 +161,7 @@ class EventOrganizerScreen extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.asset(
-                                  'images/konser1.png',
+                                  'assets/images/konser1.png', // Pastikan gambar ada di folder assets
                                   width: 60,
                                   height: 60,
                                   fit: BoxFit.cover,
@@ -219,7 +221,6 @@ class EventOrganizerScreen extends StatelessWidget {
                                                   onPressed: () {
                                                     Navigator.pop(
                                                         context); // Menutup dialog
-                                                    // Logika pemindaian menggunakan Face
                                                     print(
                                                         "Scan with Face selected");
                                                   },
@@ -237,7 +238,6 @@ class EventOrganizerScreen extends StatelessWidget {
                                                   onPressed: () {
                                                     Navigator.pop(
                                                         context); // Menutup dialog
-                                                    // Logika pemindaian menggunakan Barcode
                                                     print(
                                                         "Scan with Barcode selected");
                                                   },
@@ -267,39 +267,37 @@ class EventOrganizerScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: const Text(
-                                    'Scan'), // This is the part that triggers the image picker
+                                child: const Text('Scan'),
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  // Data event yang akan diedit
-                                  final eventData = {
-                                    'photo':
-                                        'images/konser1.png', // Placeholder path gambar
-                                    'title':
-                                        'TXT World Tour Act: Promise in Jkt',
-                                    'location': 'Jkt',
-                                    'description': 'This is a description',
-                                    'date': '22 Des',
-                                    'grades': [
-                                      {
-                                        'grade': 'VIP',
-                                        'price': '1,000,000',
-                                        'stock': '100'
-                                      },
-                                      {
-                                        'grade': 'Regular',
-                                        'price': '500,000',
-                                        'stock': '200'
-                                      },
-                                    ],
-                                  };
-
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          EditEventScreen(eventData: eventData),
+                                      builder: (context) => EditEventScreen(
+                                        initialTitle:
+                                            'TXT World Tour Act: Promise in Jkt',
+                                        initialLocation: 'Jkt',
+                                        initialDescription:
+                                            'This is a description',
+                                        initialDate: '22 Des',
+                                        initialGrades: [
+                                          {
+                                            'grade': 'VIP',
+                                            'price': '1,000,000',
+                                            'stock': '100'
+                                          },
+                                          {
+                                            'grade': 'Regular',
+                                            'price': '500,000',
+                                            'stock': '200'
+                                          },
+                                        ],
+                                        initialImages: [
+                                          File(
+                                              'images/konser1.png'), // Add actual image file paths here
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },
@@ -319,7 +317,7 @@ class EventOrganizerScreen extends StatelessWidget {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  // Navigasi atau logika untuk Delete
+                                  // Implement Delete functionality here
                                 },
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.red[50],
@@ -350,5 +348,3 @@ class EventOrganizerScreen extends StatelessWidget {
     );
   }
 }
-
-ImagePickerScreen() {}

@@ -2,9 +2,8 @@ import 'package:fest_ticketing/presentation/category/screen/category.dart';
 import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
 import 'package:fest_ticketing/presentation/product/screen/product_detail.dart';
 import 'package:fest_ticketing/presentation/profile/screen/profile.dart';
-import 'package:flutter/material.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
-
+import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,10 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColor.primary,
           elevation: 0,
           title: Row(
             children: [
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(
                   Icons.category,
-                  color: AppColor.primary,
+                  color: Colors.grey[200],
                   size: screenSize.width * 0.06,
                 ),
                 onPressed: () =>
@@ -82,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 albumCovers: const [
                   'assets/images/konser1.png',
                   'assets/images/konser1.png',
+                  'assets/images/konser1.png',
+                  'assets/images/konser1.png',
                 ],
                 screenSize: screenSize,
               ),
@@ -93,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 albumCovers: const [
                   'assets/images/konser1.png',
                   'assets/images/konser1.png',
+                  'assets/images/konser1.png',
                 ],
                 screenSize: screenSize,
               ),
@@ -102,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 context: context,
                 title: 'New In',
                 albumCovers: const [
+                  'assets/images/konser1.png',
                   'assets/images/konser1.png',
                   'assets/images/konser1.png',
                 ],
@@ -174,10 +178,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final cardHeight = cardWidth * 1.3;
     final totalItemHeight = cardHeight + 40; // Image height + text space
 
-    return SizedBox(
+    return Container(
       height: totalItemHeight + 50, // Add padding for section header
+      color: Colors.white,
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Add this
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
@@ -230,37 +234,112 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Container(
                     width: cardWidth,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          blurRadius: 8,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min, // Add this
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(12),
+                          ),
                           child: Image.asset(
-                            albumCovers[index],
-                            width: cardWidth,
-                            height: cardHeight,
+                            'assets/images/konser1.png',
+                            height: screenSize.height * 0.2,
+                            width: double.infinity,
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          'Concert Title',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const Text(
-                          'Artist Name',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Concert ${index + 1}',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Artist ${index + 1}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 2),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'IDR 1,000,000',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColor.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
+                    // child: Column(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     ClipRRect(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //       child: Image.asset(
+                    //         albumCovers[index],
+                    //         width: cardWidth,
+                    //         height: cardHeight,
+                    //         fit: BoxFit.cover,
+                    //       ),
+                    //     ),
+                    //     const SizedBox(height: 4),
+                    //     Padding(
+                    //       padding: const EdgeInsets.symmetric(horizontal: 6),
+                    //       child: const Text(
+                    //         'Concert Title',
+                    //         style: TextStyle(
+                    //           fontSize: 14,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Padding(
+                    //       padding: const EdgeInsets.symmetric(horizontal: 6),
+                    //       child: const Text(
+                    //         'Artist Name',
+                    //         style: TextStyle(
+                    //           fontSize: 12,
+                    //           color: Colors.grey,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ),
                 );
               },
