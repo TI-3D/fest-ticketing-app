@@ -40,7 +40,7 @@ class CategoryScreen extends StatelessWidget {
                       title: 'Concert ${index + 1}',
                       artist: 'Artist ${index + 1}',
                       imagePath: 'assets/images/konser1.png',
-                      price: 1000000, // Ganti dengan harga sebenarnya
+                      price: [529000, 829000, 1029000], // Ganti dengan harga sebenarnya
                     ),
                   ),
                 );

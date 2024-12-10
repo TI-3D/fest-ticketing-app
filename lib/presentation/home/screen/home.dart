@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 title: 'Concert Title',
                                 artist: 'Artist Name',
                                 imagePath: 'assets/images/konser1.png',
-                                price: 1000000, // Contoh harga
+                                price: [529000, 829000, 1029000] // Contoh harga
                               ),
                             ),
                           ),
@@ -410,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: 'Concert Title',
                         artist: 'Artist Name',
                         imagePath: albumCovers[index],
-                        price: 1000000,
+                        price: [529000, 829000, 1029000],
                       ),
                     ),
                   ),

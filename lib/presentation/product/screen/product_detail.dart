@@ -2,12 +2,11 @@ import 'package:fest_ticketing/presentation/product/screen/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
 
-
 class ProductDetailScreen extends StatelessWidget {
   final String title;
   final String artist;
   final String imagePath;
-  final double price;
+  final List<double> price;
 
   const ProductDetailScreen({
     Key? key,
@@ -20,39 +19,38 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3, // Number of images
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          imagePath,
-                          width: 150,
-                          fit: BoxFit.cover,
+              Stack(
+                children: [
+                  ClipRRect(
+                    child: Image.asset(
+                      imagePath,
+                      width: double.infinity,
+                      height: 500,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.white,
+                          ],
+                          stops: [0.75, 1.0],
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               Text(
@@ -63,8 +61,11 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
+              // Rentang harga
               Text(
-                'Rp ${price.toStringAsFixed(0)}',
+                price.length > 1
+                    ? 'Rp ${price[0].toStringAsFixed(0)} - Rp ${price[2].toStringAsFixed(0)}'
+                    : 'Rp ${price[0].toStringAsFixed(0)}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -76,7 +77,7 @@ class ProductDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,39 +90,22 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text('GA', style: TextStyle(fontSize: 14)),
-                        Text('2000', style: TextStyle(fontSize: 14)),
-                        Text('Rp 529.000', style: TextStyle(fontSize: 14)),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text('VIP', style: TextStyle(fontSize: 14)),
-                        Text('1000', style: TextStyle(fontSize: 14)),
-                        Text('Rp 829.000', style: TextStyle(fontSize: 14)),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text('VVIP', style: TextStyle(fontSize: 14)),
-                        Text('500', style: TextStyle(fontSize: 14)),
-                        Text('Rp 1.029.000', style: TextStyle(fontSize: 14)),
-                      ],
-                    ),
+                    _ticketRow('GA', 2000, 'Rp ${price[0].toStringAsFixed(0)}'),
+                    _ticketRow(
+                        'VIP', 1000, 'Rp ${price[1].toStringAsFixed(0)}'),
+                    _ticketRow(
+                        'VVIP', 500, 'Rp ${price[2].toStringAsFixed(0)}'),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
+              // Deskripsi artis
               const Text(
                 'Tomorrow X Together, umumnya dikenal sebagai TXT, adalah grup vokal pria asal Korea Selatan yang dibentuk oleh Big Hit Music. Grup ini terdiri dari lima anggota, antara lain: Soobin, Yeonjun, Beomgyu, Taehyun dan HueningKai. Mereka debut pada 4 Maret 2019 dengan album mini The Dream Chapter: Star',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
               ),
             ],
           ),
@@ -136,9 +120,7 @@ class ProductDetailScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 16,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 16),
           ),
           child: const Text(
             'Book Now',
@@ -153,6 +135,20 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
+  Widget _ticketRow(String type, int quantity, String price) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(type, style: const TextStyle(fontSize: 14)),
+          Text('$quantity', style: const TextStyle(fontSize: 14)),
+          Text(price, style: const TextStyle(fontSize: 14)),
+        ],
+      ),
+    );
+  }
+
   void _showBookingOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -161,7 +157,8 @@ class ProductDetailScreen extends StatelessWidget {
       ),
       builder: (BuildContext context) {
         int quantity = 1;
-        String selectedGrade = 'VIP'; // Default grade
+        String selectedGrade = 'GA'; // Default grade
+        double selectedPrice = price[0]; // Default price
 
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
@@ -188,7 +185,6 @@ class ProductDetailScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // Grade selection
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -201,6 +197,17 @@ class ProductDetailScreen extends StatelessWidget {
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedGrade = newValue!;
+                            switch (selectedGrade) {
+                              case 'GA':
+                                selectedPrice = price[0];
+                                break;
+                              case 'VIP':
+                                selectedPrice = price[1];
+                                break;
+                              case 'VVIP':
+                                selectedPrice = price[2];
+                                break;
+                            }
                           });
                         },
                         items: <String>['GA', 'VIP', 'VVIP']
@@ -214,7 +221,6 @@ class ProductDetailScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // Quantity selection
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -248,21 +254,21 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add booking logic here
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Checkout(
-                              ticketClass: selectedGrade, 
-                              quantity: quantity, 
-                              price: price,
+                              ticketClass: selectedGrade,
+                              quantity: quantity,
+                              price: selectedPrice * quantity,
                             ),
                           ),
-                        ); // Close the modal
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.primary,
@@ -272,7 +278,7 @@ class ProductDetailScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                       child: Text(
-                        'Rp ${(price * quantity).toStringAsFixed(0)}',
+                        'Rp ${(selectedPrice * quantity).toStringAsFixed(0)}',
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
