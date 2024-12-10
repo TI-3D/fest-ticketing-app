@@ -53,7 +53,7 @@ class _CheckoutState extends State<Checkout> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(18),
                       child: Image.asset(
-                        'images/konser1.png', // Replace with the correct image path
+                        'assets/images/konser1.png', // Replace with the correct image path
                         width: 100,
                         height: 150,
                         fit: BoxFit.cover,

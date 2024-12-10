@@ -88,7 +88,7 @@ class Ticket extends StatelessWidget {
 
               // barcode
               Image.asset(
-                '/images/barcode.png',
+                'assets/images/barcode.png',
                 height: 80,
               ),
               const SizedBox(height: 16),
