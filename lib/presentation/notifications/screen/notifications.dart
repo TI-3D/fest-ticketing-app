@@ -7,33 +7,31 @@ class NotificationPage extends StatefulWidget {
   State<NotificationPage> createState() => _NotificationPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage> with SingleTickerProviderStateMixin {
+class _NotificationPageState extends State<NotificationPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   final List<Map<String, String>> userNotifications = [
     {
-      "message": "Anang, you placed an order, check your order history for full details",
+      "message":
+          "Anang, you placed an order, check your order history for full details",
       "read": "false"
     },
     {
-      "message": "Anang, Thank you for booking with us. We have canceled order #24568.",
+      "message":
+          "Anang, Thank you for booking with us. We have canceled order #24568.",
       "read": "true"
     },
     {
-      "message": "Anang, your Order #24568 has been confirmed, check your order history...",
+      "message":
+          "Anang, your Order #24568 has been confirmed, check your order history...",
       "read": "true"
     },
   ];
 
   final List<Map<String, String>> organizerNotifications = [
-    {
-      "message": "Event #24568 has been successfully created.",
-      "read": "true"
-    },
-    {
-      "message": "Your event registration is under review.",
-      "read": "false"
-    },
+    {"message": "Event #24568 has been successfully created.", "read": "true"},
+    {"message": "Your event registration is under review.", "read": "false"},
     {
       "message": "Your payment for Event #24568 has been confirmed.",
       "read": "true"
@@ -167,8 +165,7 @@ class NotificationCard extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if (!isRead)
-                      const SizedBox(height: 8),
+                    if (!isRead) const SizedBox(height: 8),
                     if (!isRead)
                       Container(
                         padding: const EdgeInsets.symmetric(

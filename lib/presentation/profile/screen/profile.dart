@@ -180,6 +180,8 @@
 //   }
 // }
 
+import 'package:fest_ticketing/presentation/profile/screen/event_request_page.dart';
+import 'package:fest_ticketing/presentation/profile/screen/event_request_pending.dart';
 import 'package:fest_ticketing/presentation/profile/screen/help_support.dart';
 import 'package:fest_ticketing/presentation/profile/screen/history.dart';
 import 'package:fest_ticketing/presentation/profile/screen/mypayment.dart';
