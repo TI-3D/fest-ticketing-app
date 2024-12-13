@@ -1,27 +1,56 @@
-// notifications.dart
 import 'package:flutter/material.dart';
-import 'package:fest_ticketing/presentation/notifications/screen/notification_detail_page.dart';
 
-class NotificationPage extends StatelessWidget {
-  final List<Map<String, String>> notifications = [
+class NotificationPage extends StatefulWidget {
+  const NotificationPage({super.key});
+
+  @override
+  State<NotificationPage> createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  final List<Map<String, String>> userNotifications = [
     {
-      "message":
-          "Anang, you placed an order, check your order history for full details",
+      "message": "Anang, you placed an order, check your order history for full details",
       "read": "false"
     },
     {
-      "message":
-          "Anang, Thank you for booking with us. We have canceled order #24568.",
+      "message": "Anang, Thank you for booking with us. We have canceled order #24568.",
       "read": "true"
     },
     {
-      "message":
-          "Anang, your Order #24568 has been confirmed, check your order history...",
+      "message": "Anang, your Order #24568 has been confirmed, check your order history...",
       "read": "true"
     },
   ];
 
-  NotificationPage({super.key});
+  final List<Map<String, String>> organizerNotifications = [
+    {
+      "message": "Event #24568 has been successfully created.",
+      "read": "true"
+    },
+    {
+      "message": "Your event registration is under review.",
+      "read": "false"
+    },
+    {
+      "message": "Your payment for Event #24568 has been confirmed.",
+      "read": "true"
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,28 +64,55 @@ class NotificationPage extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
+        backgroundColor: Colors.white,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.red,
+          indicatorWeight: 3,
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+          tabs: const [
+            Tab(text: "User"),
+            Tab(text: "Event Organizer"),
+          ],
+        ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          return NotificationCard(
-            message: notifications[index]['message']!,
-            isRead: notifications[index]['read'] == 'true',
-            onTap: () {
-              // Navigasi ke halaman detail notifikasi
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationDetailPage(
-                    message: notifications[index]['message']!,
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            _buildNotificationList(userNotifications),
+            _buildNotificationList(organizerNotifications),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotificationList(List<Map<String, String>> notifications) {
+    return ListView.builder(
+      itemCount: notifications.length,
+      itemBuilder: (context, index) {
+        return NotificationCard(
+          message: notifications[index]['message']!,
+          isRead: notifications[index]['read'] == 'true',
+          onTap: () {
+            // Navigasi ke halaman detail notifikasi
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NotificationDetailPage(
+                  message: notifications[index]['message']!,
                 ),
-              );
-            },
-          );
-        },
-      ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -97,7 +153,7 @@ class NotificationCard extends StatelessWidget {
               Icon(
                 Icons.notifications_none,
                 size: 30,
-                color: Colors.grey.shade600,
+                color: isRead ? Colors.grey : Colors.red,
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -135,6 +191,28 @@ class NotificationCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class NotificationDetailPage extends StatelessWidget {
+  final String message;
+
+  const NotificationDetailPage({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Notification Detail"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          message,
+          style: const TextStyle(fontSize: 16),
         ),
       ),
     );

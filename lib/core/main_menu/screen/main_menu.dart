@@ -18,11 +18,46 @@ List<Widget> _bodyItems = [
 ];
 
 List<BottomNavigationBarItem> _bottomNavbarItem = [
-  const BottomNavigationBarItem(icon: Icon(Iconsax.home_2), label: ""),
-  const BottomNavigationBarItem(
-      icon: Icon(Iconsax.notification_bing), label: ""),
-  const BottomNavigationBarItem(icon: Icon(Iconsax.receipt), label: ""),
-  const BottomNavigationBarItem(icon: Icon(Iconsax.user), label: ""),
+  BottomNavigationBarItem(
+      icon: Icon(Icons.home_outlined),
+      activeIcon: Icon(Icons.home_rounded),
+      label: 'Home'),
+  BottomNavigationBarItem(
+      icon: Stack(
+        children: [
+          Icon(Icons.notifications_outlined),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                color: Colors.redAccent,
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                '3', // Example badge count
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      activeIcon: Icon(Icons.notifications),
+      label: 'Notifications'),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.confirmation_number_outlined),
+    activeIcon: Icon(Icons.confirmation_number),
+    label: 'Order',
+  ),
+  BottomNavigationBarItem(
+      icon: Icon(Icons.person_outline),
+      activeIcon: Icon(Icons.person),
+      label: 'Profile'),
 ];
 
 class MainMenuScreen extends StatelessWidget {
@@ -35,13 +70,17 @@ class MainMenuScreen extends StatelessWidget {
         return Scaffold(
           body: _bodyItems[state.tabIndex],
           bottomNavigationBar: BottomNavigationBar(
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
+            backgroundColor: Colors.white,
+            // showSelectedLabels: false,
+            showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
             items: _bottomNavbarItem,
             currentIndex: state.tabIndex,
-            selectedItemColor: Theme.of(context).colorScheme.primary,
+            // selectedItemColor: Theme.of(context).primaryColor,
+            selectedItemColor: Colors.redAccent,
             unselectedItemColor: Colors.grey,
+            selectedFontSize: 12,
+            unselectedFontSize: 12,
             onTap: (index) {
               if (index == 3) {
                 BlocProvider.of<AuthBloc>(context).state is Unauthenticated
