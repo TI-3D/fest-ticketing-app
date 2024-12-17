@@ -11,7 +11,7 @@ class DioClient {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             responseType: ResponseType.json,
-            sendTimeout: const Duration(seconds: 10),
+            sendTimeout: const Duration(seconds: 40),
             receiveTimeout: const Duration(seconds: 10),
           ),
         )..interceptors.addAll([
@@ -71,6 +71,7 @@ class DioClient {
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
   }) async {
     try {
       final Response response = await _dio.post(
@@ -79,6 +80,8 @@ class DioClient {
         options: options,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
+        queryParameters: queryParameters,
+        cancelToken: cancelToken,
       );
       return response;
     } on DioException {
@@ -128,7 +131,33 @@ class DioClient {
         options: options,
         cancelToken: cancelToken,
       );
-      return response.data;
+      return response;
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  // PATCH METHOD
+  Future<Response> patch(
+    String url, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final Response response = await _dio.patch(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken,
+      );
+      return response;
     } on DioException {
       rethrow;
     }

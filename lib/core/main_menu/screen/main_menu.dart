@@ -1,17 +1,18 @@
-import 'package:fest_ticketing/common/bloc/authentication/authentication_bloc.dart';
-import 'package:fest_ticketing/common/bloc/authentication/authentication_state.dart';
+import 'package:fest_ticketing/common/helpers/navigator/app_navigator.dart';
 import 'package:fest_ticketing/core/main_menu/bloc/main_menu_bloc.dart';
-import 'package:fest_ticketing/presentation/authentication/screen/signin.dart';
-import 'package:fest_ticketing/presentation/home/screen/home.dart';
+import 'package:fest_ticketing/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:fest_ticketing/features/authentication/presentation/pages/signin.dart';
+import 'package:fest_ticketing/features/home/presentation/pages/home.dart';
+import 'package:fest_ticketing/features/liveness_detection/presentation/pages/start_register.dart';
 import 'package:fest_ticketing/presentation/notifications/screen/notifications.dart';
 import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
-import 'package:fest_ticketing/presentation/profile/screen/profile.dart';
+import 'package:fest_ticketing/features/profile/presentation/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 List<Widget> _bodyItems = [
-  const HomeScreen(),
+  HomeScreen(),
   NotificationPage(),
   OrdersPage(),
   ProfileScreen(),
@@ -65,13 +66,14 @@ class MainMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AuthBloc>().add(AuthIsUserLoggedIn());
     return BlocBuilder<MainMenuBloc, MainMenuState>(
       builder: (context, state) {
         return Scaffold(
           body: _bodyItems[state.tabIndex],
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Colors.white,
-            // showSelectedLabels: false,
+            //             showSelectedLabels: false,
             showUnselectedLabels: true,
             type: BottomNavigationBarType.fixed,
             items: _bottomNavbarItem,
@@ -83,11 +85,21 @@ class MainMenuScreen extends StatelessWidget {
             unselectedFontSize: 12,
             onTap: (index) {
               if (index == 3) {
-                BlocProvider.of<AuthBloc>(context).state is Unauthenticated
-                    ? Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SigninScreen()))
-                    : BlocProvider.of<MainMenuBloc>(context)
+                final state = BlocProvider.of<AuthBloc>(context).state;
+                switch (state.runtimeType) {
+                  case AuthLoading:
+                    break;
+                  case AuthSuccess:
+                    BlocProvider.of<MainMenuBloc>(context)
                         .add(ChangeTabEvent(index));
+                    break;
+                  case AuthRegisteredUncompleted:
+                    AppNavigator.push(context, StartRegister());
+                    break;
+
+                  default:
+                    AppNavigator.push(context, SigninScreen());
+                }
               } else {
                 BlocProvider.of<MainMenuBloc>(context)
                     .add(ChangeTabEvent(index));

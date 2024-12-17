@@ -1,4 +1,3 @@
-import 'package:fest_ticketing/presentation/home/screen/home.dart';
 import 'package:fest_ticketing/presentation/orders/screen/ticket.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/core/constant/color.dart';

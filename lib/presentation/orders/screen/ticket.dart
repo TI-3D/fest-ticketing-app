@@ -1,4 +1,3 @@
-import 'package:fest_ticketing/presentation/home/screen/home.dart';
 import 'package:flutter/material.dart';
 
 class Ticket extends StatelessWidget {

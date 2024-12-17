@@ -77,6 +77,13 @@ dependencies:
 
   # url 
   url_launcher: ^6.1.14
+
+  # Connectivity
+  internet_connection_checker_plus: ^2.5.2
+
+  # Websocket
+  web_socket_channel: ^3.0.1
+  
   
 
 dev_dependencies:
