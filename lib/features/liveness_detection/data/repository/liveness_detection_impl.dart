@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:camera/camera.dart';
+import 'package:fest_ticketing/core/constant/api_url.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class LivenessDetectionRepository {
@@ -20,8 +21,8 @@ class LivenessDetectionRepository {
     _channel = WebSocketChannel.connect(
       Uri.parse(
         mode == 'register'
-            ? 'ws://192.168.1.6:3000/ws/register/$userId'
-            : 'ws://192.168.1.6:3000/ws/verify/$userId',
+            ? ApiUrl.faceRegister(userId)
+            : ApiUrl.faceVerify(userId),
       ),
     );
   }
