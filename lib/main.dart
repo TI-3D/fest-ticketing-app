@@ -7,6 +7,7 @@ import 'package:fest_ticketing/features/event_organizer/presentation/bloc/event_
 import 'package:fest_ticketing/features/event_organizer/presentation/bloc/event_organizer/event_organizer_bloc.dart';
 import 'package:fest_ticketing/features/home/presentation/bloc/categories/categories_cubit.dart';
 import 'package:fest_ticketing/features/home/presentation/bloc/event/event_cubit.dart';
+import 'package:fest_ticketing/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:fest_ticketing/features/profile/presentation/bloc/edit_profile_bloc.dart';
 import 'package:fest_ticketing/firebase_options.dart';
 import 'package:fest_ticketing/presentation/splash/screen/splash.dart';
@@ -19,6 +20,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // await sl<SecureStorageService>().write('access_token',
+  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYzM4MzJlMC0wNDE5LTQ2OTctYjVjZS00YzE4NmFmN2Y1ZjkiLCJyb2xlIjoiUm9sZS5FTyIsImV4cCI6MTczNzA1OTE5NS41ODg0NTd9.pYRZk64VJE7wVtaQoPWG9ANMqKMaSRAk0AWWZHPyQcY');
   runApp(App());
 }
 
@@ -28,6 +31,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => sl<PaymentCubit>()),
         BlocProvider(create: (context) => sl<EventCreationBloc>()),
         BlocProvider(create: (context) => sl<EditProfileBloc>()),
         BlocProvider(create: (context) => sl<AppUserCubit>()),

@@ -12,7 +12,7 @@ class DioClient {
             },
             responseType: ResponseType.json,
             sendTimeout: const Duration(seconds: 40),
-            receiveTimeout: const Duration(seconds: 10),
+            receiveTimeout: const Duration(seconds: 60),
           ),
         )..interceptors.addAll([
             AuthorizationInterceptor(),

@@ -1,6 +1,7 @@
 class ApiUrl {
-  static const String host = 'api.raihanachmad.web.id';
-  static const String baseUrl = 'https://${host}/api/v1';
+  // static const String host = 'api.raihanachmad.web.id';
+  static const String host = '192.168.1.156:8000';
+  static const String baseUrl = 'http://${host}/api/v1';
   // Auth
   static const String signup = '$baseUrl/auth/signup';
   static const String signupGoogle = '$baseUrl/auth/signup/google';
@@ -15,12 +16,15 @@ class ApiUrl {
   // Event
   static const String getCategories = '$baseUrl/event/categories';
   static const String getEvent = '$baseUrl/event';
+  static const String getEventPopular = '$baseUrl/event/popular';
+  static const String getEventNewest = '$baseUrl/event/newest';
 
   // Face
-  static const String wsBaseURL = 'wss://${host}/ws';
+  static const String wsBaseURL = 'ws://${host}/ws';
   static String faceRegister(String userId) => '$wsBaseURL/register/$userId';
   static String faceVerify(String userId) => '$wsBaseURL/verify/$userId';
-
+  static String faceRecognize(String eventId) =>
+      '$wsBaseURL/detection_face/$eventId';
 
   // Event Organizer
   static const String createEventOrganizer = '$baseUrl/organizer/register';
@@ -32,4 +36,9 @@ class ApiUrl {
 
   // Profile
   static const String updateProfile = '$baseUrl/user/edit';
+
+  // Payment
+  static const String getPayment = '$baseUrl/payment';
+  static String getPaymentById(String id) => '$baseUrl/payment/$id';
+  static const String createPayment = '$baseUrl/payment';
 }

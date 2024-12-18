@@ -313,20 +313,6 @@ class _EventOrganizerRequestFormState extends State<EventOrganizerRequestForm> {
         companyExperience: _experienceController.text,
         companyPortofolio: _portofolioLinkController.text,
       )));
-      // Show success message
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(content: Text('Application submitted successfully!')),
-      // );
-
-      // Clear form after submission
-      // _formKey.currentState!.reset();
-      // _companyNameController.clear();
-      // _picNameController.clear();
-      // _emailController.clear();
-      // _phoneController.clear();
-      // _addressController.clear();
-      // _experienceController.clear();
-      // _portofolioLinkController.clear();
     }
   }
 }

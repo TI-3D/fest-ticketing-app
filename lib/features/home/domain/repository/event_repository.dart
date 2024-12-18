@@ -4,5 +4,7 @@ import 'package:fest_ticketing/core/errors/failure.dart';
 
 abstract class EventRepository {
   Future<Either<Failure, List<EventEntity>>> getEvents();
+  Future<Either<Failure, List<EventEntity>>> getEventsPopular();
+  Future<Either<Failure, List<EventEntity>>> getEventsNewest();
   Future<Either<Failure, List<String>>> getCategories();
 }

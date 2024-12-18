@@ -1,8 +1,13 @@
 import 'package:fest_ticketing/common/enitites/event_class.dart';
 import 'package:fest_ticketing/common/enitites/event.dart';
+import 'package:fest_ticketing/common/helpers/navigator/app_navigator.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
-import 'package:fest_ticketing/presentation/product/screen/checkout.dart';
+import 'package:fest_ticketing/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:fest_ticketing/features/authentication/presentation/pages/signin.dart';
+import 'package:fest_ticketing/features/liveness_detection/presentation/pages/start_register.dart';
+import 'package:fest_ticketing/features/product/presentation/pages/checkout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -95,7 +100,8 @@ class ProductDetailScreen extends StatelessWidget {
         children: [
           _buildEventTitle(),
           const SizedBox(height: 8),
-          _buildPriceRange(event.classes),
+          _buildPriceRange(
+              event.classes.whereType<EventClassEntity>().toList()),
           const SizedBox(height: 16),
           _buildTicketAvailableTable(),
           const SizedBox(height: 16),
@@ -148,7 +154,8 @@ class ProductDetailScreen extends StatelessWidget {
         children: [
           _buildTableHeader(),
           ...event.classes
-              .map((c) => _buildTicketRow(c.className, c.count, c.basePrice))
+              .map((c) => _buildTicketRow(
+                  c?.className ?? '', c?.count ?? 0, c?.basePrice ?? 0))
               .toList(),
         ],
       ),
@@ -227,7 +234,8 @@ class ProductDetailScreen extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () => _showBookingOptions(context, event.classes),
+          onPressed: () => _showBookingOptions(
+              context, event.classes.whereType<EventClassEntity>().toList()),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColor.primary,
             shape: RoundedRectangleBorder(
@@ -257,16 +265,21 @@ class ProductDetailScreen extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext context) {
-        return _BookingOptionsSheet(eventClasses: classes);
+        return _BookingOptionsSheet(event: event, eventClasses: classes);
       },
     );
   }
 }
 
 class _BookingOptionsSheet extends StatefulWidget {
+  final EventEntity event;
   final List<EventClassEntity> eventClasses;
 
-  const _BookingOptionsSheet({required this.eventClasses});
+  const _BookingOptionsSheet({
+    Key? key,
+    required this.event,
+    required this.eventClasses,
+  }) : super(key: key);
 
   @override
   _BookingOptionsSheetState createState() => _BookingOptionsSheetState();
@@ -304,8 +317,6 @@ class _BookingOptionsSheetState extends State<_BookingOptionsSheet> {
             _buildHeader(),
             const SizedBox(height: 16),
             _buildTicketClassSelector(),
-            const SizedBox(height: 16),
-            _buildQuantitySelector(),
             const SizedBox(height: 16),
             _buildTotalPriceButton(context),
             const SizedBox(height: 16),
@@ -365,8 +376,7 @@ class _BookingOptionsSheetState extends State<_BookingOptionsSheet> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: SingleChildScrollView(
-                    controller:
-                        _scrollController, // Tambahkan controller di sini
+                    controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Row(
@@ -427,8 +437,6 @@ class _BookingOptionsSheetState extends State<_BookingOptionsSheet> {
                     ),
                   ),
                 ),
-
-                // Scroll Indicators
                 if (isScrollable) ..._buildScrollIndicators(),
               ],
             );
@@ -440,7 +448,6 @@ class _BookingOptionsSheetState extends State<_BookingOptionsSheet> {
 
   List<Widget> _buildScrollIndicators() {
     return [
-      // Left Scroll Indicator
       Positioned(
         left: 0,
         top: 0,
@@ -474,8 +481,6 @@ class _BookingOptionsSheetState extends State<_BookingOptionsSheet> {
           ),
         ),
       ),
-
-      // Right Scroll Indicator
       Positioned(
         right: 0,
         top: 0,
@@ -512,59 +517,6 @@ class _BookingOptionsSheetState extends State<_BookingOptionsSheet> {
     ];
   }
 
-  Widget _buildQuantitySelector() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Number of Tickets',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (quantity > 1) quantity--;
-                  });
-                },
-                icon: const Icon(Icons.remove_circle_outline),
-                color: Colors.grey[700],
-              ),
-              Text(
-                quantity.toString(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    quantity++;
-                  });
-                },
-                icon: const Icon(Icons.add_circle_outline),
-                color: AppColor.primary,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildTotalPriceButton(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -588,16 +540,28 @@ class _BookingOptionsSheetState extends State<_BookingOptionsSheet> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Checkout(
-                ticketClass: selectedClass.className,
-                quantity: quantity,
-                price: selectedClass.basePrice * quantity,
-              ),
-            ),
-          );
+          final state = BlocProvider.of<AuthBloc>(context).state;
+          switch (state.runtimeType) {
+            case AuthLoading:
+              break;
+            case AuthSuccess:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Checkout(
+                    event: widget.event,
+                    ticketClass: selectedClass,
+                    quantity: quantity,
+                  ),
+                ),
+              );
+              break;
+            case AuthRegisteredUncompleted:
+              AppNavigator.push(context, StartRegister());
+              break;
+            default:
+              AppNavigator.push(context, SigninScreen());
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,

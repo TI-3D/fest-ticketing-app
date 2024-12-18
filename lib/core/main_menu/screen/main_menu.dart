@@ -4,12 +4,12 @@ import 'package:fest_ticketing/features/authentication/presentation/bloc/auth_bl
 import 'package:fest_ticketing/features/authentication/presentation/pages/signin.dart';
 import 'package:fest_ticketing/features/home/presentation/pages/home.dart';
 import 'package:fest_ticketing/features/liveness_detection/presentation/pages/start_register.dart';
+import 'package:fest_ticketing/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:fest_ticketing/presentation/notifications/screen/notifications.dart';
 import 'package:fest_ticketing/presentation/orders/screen/orders.dart';
 import 'package:fest_ticketing/features/profile/presentation/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconsax/iconsax.dart';
 
 List<Widget> _bodyItems = [
   HomeScreen(),

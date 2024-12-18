@@ -2,27 +2,88 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fest_ticketing/common/enitites/event.dart';
 import 'package:fest_ticketing/features/home/domain/usecase/get_event.dart';
+import 'package:fest_ticketing/features/home/domain/usecase/get_event_newest.dart';
+import 'package:fest_ticketing/features/home/domain/usecase/get_event_popular.dart';
 
 part 'event_state.dart';
 
 class EventCubit extends Cubit<EventState> {
   final GetEventUseCase _eventUseCase;
-  List<EventEntity> _allEvents = []; // Simpan semua event
+  final GetEventNewestUseCase _eventNewestUseCase;
+  final GetEventPopularUseCase _eventPopularUseCase;
 
-  EventCubit({required GetEventUseCase eventUseCase})
-      : _eventUseCase = eventUseCase,
+  List<EventEntity> _allEvents = []; // Simpan semua event
+  List<EventEntity> _allEventsPopular = []; // Simpan semua event populer
+  List<EventEntity> _allEventsNewest = []; // Simpan semua event mendatang
+
+  EventCubit({
+    required GetEventUseCase eventUseCase,
+    required GetEventNewestUseCase eventNewestUseCase,
+    required GetEventPopularUseCase eventPopularUseCase,
+  })  : _eventUseCase = eventUseCase,
+        _eventNewestUseCase = eventNewestUseCase,
+        _eventPopularUseCase = eventPopularUseCase,
         super(EventInitial());
 
   Future<void> fetchEvents() async {
     emit(EventLoading());
-    final res = await _eventUseCase();
-    res.fold(
+
+    // Mengambil semua event
+    final allEventsResult = await _eventUseCase();
+    final newestEventsResult = await _eventNewestUseCase();
+    final popularEventsResult = await _eventPopularUseCase();
+    allEventsResult.fold(
       (failure) => emit(EventFailure(failure.message)),
       (events) {
         _allEvents = events;
-        emit(EventLoaded(events)); // Muat semua event
+        newestEventsResult.fold(
+          (failure) => emit(EventFailure(failure.message)),
+          (events) {
+            _allEventsNewest = events;
+            popularEventsResult.fold(
+              (failure) => emit(EventFailure(failure.message)),
+              (events) {
+                _allEventsPopular = events;
+                emit(EventLoaded(
+                    _allEvents, _allEventsPopular, _allEventsNewest));
+              },
+            );
+          },
+        );
       },
     );
+
+    // final newestEventsResult = await _eventNewestUseCase();
+    // final popularEventsResult = await _eventPopularUseCase();
+
+    // Menangani hasil untuk semua event
+    // if (allEventsResult.isLeft()) {
+    //   emit(EventFailure(allEventsResult.fold((l) => l.message, (r) => '')));
+    //   return;
+    // }
+
+    // Menangani hasil untuk event terbaru
+    // if (newestEventsResult.isLeft()) {
+    //   emit(EventFailure(newestEventsResult.fold((l) => l.message, (r) => '')));
+    //   return;
+    // }
+
+    // // Menangani hasil untuk event populer
+    // if (popularEventsResult.isLeft()) {
+    //   emit(EventFailure(popularEventsResult.fold((l) => l.message, (r) => '')));
+    //   return;
+    // }
+
+    // Jika semua berhasil
+    // _allEvents = allEventsResult.getOrElse(() => []);
+    // final newestEvents = newestEventsResult.getOrElse(() => []);
+    // final popularEvents = popularEventsResult.getOrElse(() => []);
+
+    // emit(EventLoaded(
+    //   _allEvents,
+    //   _allEventsPopular,
+    //   _allEventsNewest,
+    // ));
   }
 
   void filterEvents(List<String> selectedCategories) {
@@ -30,7 +91,7 @@ class EventCubit extends Cubit<EventState> {
 
     // Jika 'All' dipilih atau tidak ada kategori, tampilkan semua event
     if (selectedCategories.contains('All') || selectedCategories.isEmpty) {
-      emit(EventLoaded(_allEvents));
+      emit(EventLoaded(_allEvents, _allEventsPopular, _allEventsNewest));
     } else {
       // Filter event berdasarkan kategori yang dipilih
       final filteredEvents = _allEvents.where((event) {
@@ -39,7 +100,19 @@ class EventCubit extends Cubit<EventState> {
             .any((category) => selectedCategories.contains(category));
       }).toList();
 
-      emit(EventLoaded(filteredEvents));
+      // Filter event populer
+      final filteredEventsPopular = _allEventsPopular.where((event) {
+        return event.categories
+            .any((category) => selectedCategories.contains(category));
+      }).toList();
+
+      // Filter event terbaru
+      final filteredEventsNewest = _allEventsNewest.where((event) {
+        return event.categories
+            .any((category) => selectedCategories.contains(category));
+      }).toList();
+      emit(EventLoaded(
+          filteredEvents, filteredEventsPopular, filteredEventsNewest));
     }
   }
 
@@ -58,9 +131,31 @@ class EventCubit extends Cubit<EventState> {
       // Cek pencarian (case-insensitive)
       final searchMatch = searchQuery.isEmpty ||
           event.name.toLowerCase().contains(searchQuery) ||
-          event.categories
-              .any((category) => category.toLowerCase().contains(searchQuery));
+          event.categories.any((category) =>
+              category?.toLowerCase().contains(searchQuery) ?? false);
 
+      return categoryMatch && searchMatch;
+    }).toList();
+
+    // Filter event populer
+    final filteredEventsPopular = _allEventsPopular.where((event) {
+      final categoryMatch = categories.contains('All') ||
+          event.categories.any((category) => categories.contains(category));
+      final searchMatch = searchQuery.isEmpty ||
+          event.name.toLowerCase().contains(searchQuery) ||
+          event.categories.any((category) =>
+              category?.toLowerCase().contains(searchQuery) ?? false);
+      return categoryMatch && searchMatch;
+    }).toList();
+
+    // Filter event terbaru
+    final filteredEventsNewest = _allEventsNewest.where((event) {
+      final categoryMatch = categories.contains('All') ||
+          event.categories.any((category) => categories.contains(category));
+      final searchMatch = searchQuery.isEmpty ||
+          event.name.toLowerCase().contains(searchQuery) ||
+          event.categories.any((category) =>
+              category?.toLowerCase().contains(searchQuery) ?? false);
       return categoryMatch && searchMatch;
     }).toList();
 
@@ -75,10 +170,10 @@ class EventCubit extends Cubit<EventState> {
         if (!aNameMatch && bNameMatch) return 1;
 
         // Jika nama cocok, bandingkan kategori
-        final aCategoryMatch =
-            a.categories.any((cat) => cat.toLowerCase().contains(searchQuery));
-        final bCategoryMatch =
-            b.categories.any((cat) => cat.toLowerCase().contains(searchQuery));
+        final aCategoryMatch = a.categories
+            .any((cat) => cat?.toLowerCase().contains(searchQuery) ?? false);
+        final bCategoryMatch = b.categories
+            .any((cat) => cat?.toLowerCase().contains(searchQuery) ?? false);
 
         if (aCategoryMatch && !bCategoryMatch) return -1;
         if (!aCategoryMatch && bCategoryMatch) return 1;
@@ -87,6 +182,7 @@ class EventCubit extends Cubit<EventState> {
       });
     }
 
-    emit(EventLoaded(filteredEvents));
+    emit(EventLoaded(
+        filteredEvents, filteredEventsPopular, filteredEventsNewest));
   }
 }

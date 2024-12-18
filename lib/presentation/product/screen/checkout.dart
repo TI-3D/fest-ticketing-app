@@ -247,24 +247,40 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 
-  Widget _buildDetailEvent(String label, String value, {bool isBold = false}) {
+  Widget _buildDetailEvent(
+    String label,
+    String value, {
+    bool isBold = false,
+    Color? labelColor,
+    Color? valueColor,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+          Flexible(
+            flex: 1, // Default flex 1
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                color: labelColor ?? Colors.black87,
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+          const SizedBox(width: 8), // Tambahkan jarak
+          Flexible(
+            flex: 2, // Default flex 2
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 14,
+                color: valueColor ?? Colors.black54,
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

@@ -3,26 +3,26 @@ import 'package:dio/dio.dart';
 import 'package:fest_ticketing/core/constant/api_url.dart';
 import 'package:fest_ticketing/core/errors/server.dart';
 import 'package:fest_ticketing/core/network/dio_client.dart';
+import 'package:fest_ticketing/features/payment/domain/usecase/create_payment.dart';
 
-abstract class EventApiService {
-  Future<Either<ServerException, Response>> getEvent();
-  Future<Either<ServerException, Response>> getEventsPopular();
-  Future<Either<ServerException, Response>> getEventsNewest();
-  Future<Either<ServerException, Response>> getCategories();
+abstract class PaymentApiService {
+  Future<Either<ServerException, Response>> getPayments();
+  Future<Either<ServerException, Response>> getPaymentById(String id);
+  Future<Either<ServerException, Response>> createPayment(CreatePaymentRequestParams params);
 }
 
-class EventApiServiceImpl implements EventApiService {
+class PaymentApiServiceImpl implements PaymentApiService {
   final DioClient _dioClient;
 
-  EventApiServiceImpl({
+  PaymentApiServiceImpl({
     required DioClient dioClient,
   }) : _dioClient = dioClient;
 
   @override
-  Future<Either<ServerException, Response>> getEvent() async {
+  Future<Either<ServerException, Response>> getPayments() async {
     try {
       final Response response = await _dioClient.get(
-        ApiUrl.getEvent,
+        ApiUrl.getPayment,
       );
       if (response.statusCode == 200) {
         return Right(response);
@@ -36,26 +36,10 @@ class EventApiServiceImpl implements EventApiService {
   }
   
   @override
-  Future<Either<ServerException, Response>> getEventsPopular() async {
+  Future<Either<ServerException, Response>> getPaymentById(String id) async {
     try {
       final Response response = await _dioClient.get(
-        ApiUrl.getEventPopular,
-      );
-      if (response.statusCode == 200) {
-        return Right(response);
-      } else {
-        return Left(ServerException(response.data['message']));
-      }
-    } on DioException catch (e) {
-      return Left(
-          ServerException(e.response?.data['message'] ?? 'Unknown error'));
-    }
-  }
-  @override
-  Future<Either<ServerException, Response>> getEventsNewest() async {
-    try {
-      final Response response = await _dioClient.get(
-        ApiUrl.getEventNewest
+        ApiUrl.getPaymentById(id),
       );
       if (response.statusCode == 200) {
         return Right(response);
@@ -69,10 +53,11 @@ class EventApiServiceImpl implements EventApiService {
   }
 
   @override
-  Future<Either<ServerException, Response>> getCategories() async {
+  Future<Either<ServerException, Response>> createPayment(CreatePaymentRequestParams params) async {
     try {
-      final Response response = await _dioClient.get(
-        ApiUrl.getCategories,
+      final Response response = await _dioClient.post(
+        ApiUrl.createPayment,
+        data: params.toMap(),
       );
       if (response.statusCode == 200) {
         return Right(response);

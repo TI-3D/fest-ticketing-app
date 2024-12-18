@@ -1,8 +1,8 @@
+import 'package:fest_ticketing/common/enitites/payment.dart';
 import 'package:flutter/material.dart';
-import 'ticket.dart';
 
 class OrdersDetailsPage extends StatelessWidget {
-  final Map<String, dynamic> order;
+  final PaymentEntity order;
 
   const OrdersDetailsPage({super.key, required this.order});
 
@@ -20,9 +20,9 @@ class OrdersDetailsPage extends StatelessWidget {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          'Order #454809',
-          style: TextStyle(
+        title: Text(
+          'Order #${order.paymentId}', // Menampilkan ID pembayaran
+          style: const TextStyle(
             color: Color.fromRGBO(255, 255, 255, 1),
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class OrdersDetailsPage extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        'https://via.placeholder.com/60', // Ganti dengan URL gambar Anda
+                        order.event.image, // Menggunakan gambar event
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
@@ -66,7 +66,7 @@ class OrdersDetailsPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            order['orderId'] ?? 'Unknown Order',
+                            order.event.name, // Menggunakan nama event
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -74,9 +74,9 @@ class OrdersDetailsPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            'Class - GA',
-                            style: TextStyle(color: Colors.black),
+                          Text(
+                            'Class: ${order.eventClass.className}', // Menampilkan nama kelas
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ],
                       ),
@@ -104,11 +104,20 @@ class OrdersDetailsPage extends StatelessWidget {
                     ),
                     const Divider(),
                     const SizedBox(height: 8),
-                    _buildDetailRow('Order Detail ID:', '12343242344134'),
+                    _buildDetailRow('Order Detail ID:', order.paymentId),
                     const SizedBox(height: 8),
-                    _buildDetailRow('Validity Period:', '10 Feb 2024'),
+                    _buildDetailRow('Amount:',
+                        '\$${order.amount.toStringAsFixed(2)}'), // Menampilkan jumlah
                     const SizedBox(height: 8),
-                    _buildDetailRow('Contact Info:', 'Muhammad Anang'),
+                    _buildDetailRow('Quantity:',
+                        order.qty.toString()), // Menampilkan kuantitas
+                    const SizedBox(height: 8),
+                    _buildDetailRow(
+                        'Payment Status:',
+                        order.paymentStatus
+                            .toString()
+                            .split('.')
+                            .last), // Menampilkan status pembayaran
                   ],
                 ),
               ),
@@ -121,13 +130,7 @@ class OrdersDetailsPage extends StatelessWidget {
                 title: const Text('Tickets details'),
                 trailing: const Icon(Icons.arrow_forward),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          Ticket(), // Pastikan Ticket adalah widget yang benar
-                    ),
-                  );
+                  // Navigasi ke halaman tiket jika ada
                 },
               ),
             ),

@@ -10,8 +10,8 @@ class Event {
   final String image;
   final String location;
   final DateTime date;
-  final List<String> categories;
-  final List<EventClass> classes;
+  final List<String?> categories;
+  final List<EventClass?> classes;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -37,7 +37,7 @@ class Event {
       'location': location,
       'categories': categories,
       'date': date.toIso8601String(),
-      'event_classes': classes.map((x) => x.toMap()).toList(),
+      'event_classes': classes.map((x) => x?.toMap()).toList(),
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
     };
@@ -51,9 +51,12 @@ class Event {
       image: map['image'],
       location: map['location'],
       date: DateTime.parse(map['date']),
-      categories: List<String>.from(map['categories']),
-      classes: List<EventClass>.from(
-          map['event_classes']?.map((x) => EventClass.fromMap(x))),
+      categories:
+          map['categories'] != null ? List<String>.from(map['categories']) : [],
+      classes: map['event_classes'] == null
+          ? []
+          : List<EventClass>.from(
+              map['event_classes']?.map((x) => EventClass.fromMap(x))),
       createdAt: DateTime.parse(map['created_at']),
       updatedAt: DateTime.parse(map['updated_at']),
     );
@@ -74,7 +77,8 @@ extension EventExtension on Event {
       date: date,
       location: location,
       categories: categories,
-      classes: classes.map((e) => e.toEntity()).toList(),
+      // classes: classes.map((e) => e.toEntity()).toList(),
+      classes: classes.map((e) => e?.toEntity()).toList(),
       createdAt: createdAt,
       updatedAt: updatedAt,
     );

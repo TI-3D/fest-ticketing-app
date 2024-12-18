@@ -11,8 +11,10 @@ class EventInitial extends EventState {}
 class EventLoading extends EventState {}
 class EventLoaded extends EventState {
   final List<EventEntity> events;
+  final List<EventEntity> popularEvents;
+  final List<EventEntity> newestEvents;
 
-  const EventLoaded(this.events);
+  const EventLoaded(this.events, this.popularEvents, this.newestEvents);
 
   @override
   List<Object?> get props => [events];

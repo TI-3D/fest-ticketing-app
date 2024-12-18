@@ -1,3 +1,5 @@
+import 'package:fest_ticketing/common/widgets/snackbar/snackbar_failed.dart';
+import 'package:fest_ticketing/common/widgets/snackbar/snackbar_success.dart';
 import 'package:fest_ticketing/features/event_organizer/data/models/event_organizer.dart';
 import 'package:fest_ticketing/features/event_organizer/presentation/pages/event_organizer_dashboard.dart';
 import 'package:fest_ticketing/features/event_organizer/presentation/pages/event_organizer_request.page.dart';
@@ -17,21 +19,22 @@ class EventOrganizerScreen extends StatelessWidget {
     return Scaffold(
       body: BlocListener<EventOrganizerBloc, EventOrganizerState>(
         listener: (context, state) {
-          print("State: ${state.runtimeType}");
           if (state is EventOrganizerFailure) {
             // Show Snackbar when there is a failure
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state
-                    .message), // Assuming state.message contains the error message
-                backgroundColor: Colors.red,
-              ),
+              FailedSnackBar(message: state.message),
+            );
+          }
+
+          if (state is EventOrganizerSuccess) {
+            // Show Snackbar when the organizer is successfully fetched
+            ScaffoldMessenger.of(context).showSnackBar(
+              SuccessSnackBar(message: 'Event Organizer fetched'),
             );
           }
         },
         child: BlocBuilder<EventOrganizerBloc, EventOrganizerState>(
           builder: (context, state) {
-            print("State: ${state.runtimeType}");
             if (state is EventOrganizerLoading) {
               return const Center(child: CircularProgressIndicator());
             }

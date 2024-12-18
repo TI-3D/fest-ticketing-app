@@ -7,8 +7,8 @@ class EventEntity {
   final String image;
   final String location;
   final DateTime date;
-  final List<String> categories;
-  final List<EventClassEntity> classes;
+  final List<String?> categories;
+  final List<EventClassEntity?> classes;
   final DateTime createdAt;
   final DateTime updatedAt;
 

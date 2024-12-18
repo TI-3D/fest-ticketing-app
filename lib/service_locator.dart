@@ -27,8 +27,17 @@ import 'package:fest_ticketing/features/home/data/source/event_api_service.dart'
 import 'package:fest_ticketing/features/home/domain/repository/event_repository.dart';
 import 'package:fest_ticketing/features/home/domain/usecase/get_categories.dart';
 import 'package:fest_ticketing/features/home/domain/usecase/get_event.dart';
+import 'package:fest_ticketing/features/home/domain/usecase/get_event_newest.dart';
+import 'package:fest_ticketing/features/home/domain/usecase/get_event_popular.dart';
 import 'package:fest_ticketing/features/home/presentation/bloc/categories/categories_cubit.dart';
 import 'package:fest_ticketing/features/home/presentation/bloc/event/event_cubit.dart';
+import 'package:fest_ticketing/features/payment/data/repository/payment_repository_impl.dart';
+import 'package:fest_ticketing/features/payment/data/source/payment_api_service.dart';
+import 'package:fest_ticketing/features/payment/domain/repository/payment_repository.dart';
+import 'package:fest_ticketing/features/payment/domain/usecase/create_payment.dart';
+import 'package:fest_ticketing/features/payment/domain/usecase/get_all_payment.dart';
+import 'package:fest_ticketing/features/payment/domain/usecase/get_payment_detail.dart';
+import 'package:fest_ticketing/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:fest_ticketing/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:fest_ticketing/features/profile/data/source/profile_api_service.dart';
 import 'package:fest_ticketing/features/profile/domain/repository/profile_repository.dart';
@@ -44,6 +53,7 @@ Future<void> initializeDependencies() async {
   _initEvents();
   _initEventOganizer();
   _editProfile();
+  _initPayment();
   sl.registerSingleton<SecureStorageService>(SecureStorageService());
 // sl.registerSingleton<CameraService>(CameraService());
   sl.registerSingleton<DioClient>(DioClient());
@@ -147,10 +157,22 @@ void _initEvents() {
         repository: sl(),
       ),
     )
+    ..registerFactory<GetEventPopularUseCase>(
+      () => GetEventPopularUseCase(
+        repository: sl(),
+      ),
+    )
+    ..registerFactory<GetEventNewestUseCase>(
+      () => GetEventNewestUseCase(
+        repository: sl(),
+      ),
+    )
 
     // Cubits
     ..registerFactory<EventCubit>(() => EventCubit(
           eventUseCase: sl(),
+          eventNewestUseCase: sl(),
+          eventPopularUseCase: sl(),
         ))
     ..registerFactory<CategoriesCubit>(() => CategoriesCubit(
           categoriesUseCase: sl(),
@@ -194,7 +216,6 @@ void _initEventOganizer() {
       ),
     )
 
-
     // Bloc
     ..registerFactory<EventCreationBloc>(() => EventCreationBloc(
           createEventUseCase: sl(),
@@ -233,4 +254,40 @@ void _editProfile() {
           updateProfileUseCase: sl(),
         ));
   ;
+}
+
+void _initPayment() {
+  sl
+    ..registerFactory<PaymentApiService>(
+      () => PaymentApiServiceImpl(
+        dioClient: sl(),
+      ),
+    )
+    ..registerFactory<PaymentRepository>(
+      () => PaymentRepositoryImpl(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        connectionChecker: sl(),
+      ),
+    )
+    ..registerFactory<GetAllPaymentUseCase>(
+      () => GetAllPaymentUseCase(
+        repository: sl(),
+      ),
+    )
+    ..registerFactory<GetPaymentDetailUseCase>(
+      () => GetPaymentDetailUseCase(
+        repository: sl(),
+      ),
+    )
+    ..registerFactory<CreatePaymentUseCase>(
+      () => CreatePaymentUseCase(
+        repository: sl(),
+      ),
+    )
+    ..registerFactory<PaymentCubit>(() => PaymentCubit(
+          getAllPayments: sl(),
+          getPaymentDetail: sl(),
+          createPayment: sl(),
+        ));
 }

@@ -7,8 +7,10 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 class UserDetectionPage extends StatefulWidget {
   final CameraDescription camera;
+  final String event_id;
 
-  const UserDetectionPage({super.key, required this.camera});
+  const UserDetectionPage(
+      {super.key, required this.camera, required this.event_id});
 
   @override
   _UserDetectionPageState createState() => _UserDetectionPageState();
@@ -65,7 +67,9 @@ class _UserDetectionPageState extends State<UserDetectionPage> {
 
   void startUserDetection() {
     _channel = WebSocketChannel.connect(
-      Uri.parse('ws://${ApiUrl.host}/ws/detection_face'),
+      Uri.parse(ApiUrl.faceRecognize(
+        widget.event_id,
+      )),
     );
 
     _channel.stream.listen(

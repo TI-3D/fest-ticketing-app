@@ -24,8 +24,6 @@ class RequestEoPendingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildAnimatedIllustration(),
-            const SizedBox(height: 24),
             _buildTitleText(),
             const SizedBox(height: 16),
             _buildDescriptionText(),

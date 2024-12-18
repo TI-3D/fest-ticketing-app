@@ -1,8 +1,7 @@
-import 'package:fest_ticketing/features/home/presentation/pages/category.dart';
-import 'package:fest_ticketing/features/home/presentation/pages/product_detail.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
 import 'package:fest_ticketing/features/home/presentation/bloc/categories/categories_cubit.dart';
 import 'package:fest_ticketing/features/home/presentation/bloc/event/event_cubit.dart';
+import 'package:fest_ticketing/features/product/presentation/pages/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -167,24 +166,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CategoryScreen(category: 'All'),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              'See All',
-                              style: TextStyle(
-                                color: AppColor.primary,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -196,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             return const Center(
                                 child: CircularProgressIndicator());
                           } else if (state is EventLoaded) {
-                            final events = state.events;
+                            final events = state.newestEvents;
                             return GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -338,21 +319,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryScreen(category: title),
-                    ),
-                  ),
-                  child: const Text(
-                    'See All',
-                    style: TextStyle(
-                      color: AppColor.primary,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -366,10 +332,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     scrollDirection: Axis.horizontal,
-                    itemCount: state.events.length,
+                    itemCount: state.popularEvents.length,
                     itemBuilder: (context, index) {
                       return _buildEventItem(
-                          context, state.events[index], screenSize);
+                          context, state.popularEvents[index], screenSize);
                     },
                   );
                 } else if (state is EventFailure) {
@@ -390,9 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProductDetailScreen(
-            event: event
-          ),
+          builder: (context) => ProductDetailScreen(event: event),
         ),
       ),
       child: Container(
@@ -473,9 +437,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProductDetailScreen(
-            event: event
-          ),
+          builder: (context) => ProductDetailScreen(event: event),
         ),
       ),
       child: Container(

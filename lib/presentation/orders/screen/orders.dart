@@ -1,32 +1,29 @@
-// orders.dart
+import 'package:fest_ticketing/common/enitites/payment.dart';
+import 'package:fest_ticketing/features/payment/data/models/payment.dart';
+import 'package:fest_ticketing/features/payment/presentation/bloc/payment_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'orders_detail.dart';
 
-class OrdersPage extends StatelessWidget {
-  final List<Map<String, dynamic>> orders = [
-    {
-      "orderId": "TXT World Tour Act: Promise in Jakarta",
-      "date": "10 - 14 - 2024",
-      "status": "Pending Payment"
-    },
-    {
-      "orderId": "CITY CAMP 2024",
-      "date": "10 - 14 - 2024",
-      "status": "Completed"
-    },
-    {
-      "orderId": "TXT World Tour Act: Promise in Jakarta",
-      "date": "10 - 14 - 2024",
-      "status": "Canceled"
-    },
-    {
-      "orderId": "Day6 : FOREVER YOUNG",
-      "date": "10 - 14 - 2024",
-      "status": "Canceled"
-    },
-  ];
-
+class OrdersPage extends StatefulWidget {
   OrdersPage({super.key});
+
+  @override
+  _OrdersPageState createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Memanggil fetchPaymentAll saat halaman dimuat
+    context.read<PaymentCubit>().fetchPaymentAll();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,58 +39,69 @@ class OrdersPage extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.grey),
       ),
-      body: Container(
-        color: Colors.grey[100],
-        padding: const EdgeInsets.all(16),
-        child: ListView.builder(
-          itemCount: orders.length,
-          itemBuilder: (context, index) {
-            return OrderCard(
-              orderId: orders[index]['orderId'] ?? "Unknown Order",
-              date: orders[index]['date'] ?? "Unknown Date",
-              status: orders[index]['status'] ?? "Unknown Status",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        OrdersDetailsPage(order: orders[index]),
-                  ),
-                );
-              },
+      body: BlocBuilder<PaymentCubit, PaymentState>(
+        builder: (context, state) {
+          print(state);
+          if (state is PaymentLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is PaymentFailure) {
+            return Center(child: Text('${state.message}'));
+          } else if (state is PaymentLoaded) {
+            return Container(
+              color: Colors.grey[100],
+              padding: const EdgeInsets.all(16),
+              child: ListView.builder(
+                itemCount: state.payments.length,
+                itemBuilder: (context, index) {
+                  return OrderCard(
+                    order: state.payments[index], // Menggunakan PaymentEntity
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrdersDetailsPage(
+                            order: state
+                                .payments[index], // Menggunakan PaymentEntity
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             );
-          },
-        ),
+          } else if (state is PaymentFailure) {
+            return Center(child: Text('Error: ${state.message}'));
+          } else {
+            return Center(child: Text('No orders found.'));
+          }
+        },
       ),
     );
   }
 }
 
 class OrderCard extends StatelessWidget {
-  final String orderId;
-  final String date;
-  final String status;
+  final PaymentEntity order; // Menggunakan PaymentEntity
   final VoidCallback? onTap;
 
   const OrderCard({
     super.key,
-    required this.orderId,
-    required this.date,
-    required this.status,
+    required this.order,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     Color statusColor;
-    switch (status) {
-      case "Pending Payment":
+    switch (order.paymentStatus) {
+      case PaymentStatus.PENDING:
         statusColor = Colors.orange;
         break;
-      case "Completed":
+      case PaymentStatus.COMPLETED:
         statusColor = Colors.green;
         break;
-      case "Canceled":
+      case PaymentStatus.CANCELLED:
         statusColor = Colors.red;
         break;
       default:
@@ -112,7 +120,7 @@ class OrderCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                orderId,
+                order.event.name, // Menggunakan nama event
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -121,7 +129,7 @@ class OrderCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                date,
+                "${order.date.day} - ${order.date.month} - ${order.date.year}", // Format tanggal
                 style: const TextStyle(
                   fontSize: 14,
                   color: Color.fromRGBO(117, 117, 117, 1),
@@ -135,7 +143,11 @@ class OrderCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  status,
+                  order.paymentStatus == PaymentStatus.PENDING
+                      ? "Pending"
+                      : order.paymentStatus == PaymentStatus.COMPLETED
+                          ? "Completed"
+                          : "Cancelled",
                   style: TextStyle(
                     color: statusColor,
                     fontSize: 12,

@@ -1,13 +1,17 @@
+import 'package:camera/camera.dart';
 import 'package:fest_ticketing/common/enitites/event.dart';
 import 'package:fest_ticketing/common/enitites/event_class.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
+import 'package:fest_ticketing/core/services/camera_service.dart';
+import 'package:fest_ticketing/features/liveness_detection/presentation/pages/user_detection.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class EventDetailScreen extends StatelessWidget {
+  final CameraService cameraService = CameraService()..initializeCameras();
   final EventEntity event;
 
-  const EventDetailScreen({
+  EventDetailScreen({
     Key? key,
     required this.event,
   }) : super(key: key);
@@ -91,7 +95,8 @@ class EventDetailScreen extends StatelessWidget {
         children: [
           _buildEventTitle(),
           const SizedBox(height: 8),
-          _buildPriceRange(event.classes),
+          _buildPriceRange(
+              event.classes.whereType<EventClassEntity>().toList()),
           const SizedBox(height: 16),
           _buildTicketAvailableTable(),
           const SizedBox(height: 16),
@@ -144,7 +149,8 @@ class EventDetailScreen extends StatelessWidget {
         children: [
           _buildTableHeader(),
           ...event.classes
-              .map((c) => _buildTicketRow(c.className, c.count, c.basePrice))
+              .map((c) => _buildTicketRow(
+                  c?.className ?? 'Unknown', c?.count ?? 0, c?.basePrice ?? 0))
               .toList(),
         ],
       ),
@@ -241,12 +247,13 @@ class EventDetailScreen extends StatelessWidget {
           // Scan Button
           ElevatedButton.icon(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => ScanScreen(event: event),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserDetectionPage(
+                        camera: cameraService.backCamera,
+                        event_id: event.eventId)),
+              );
             },
             icon: const Icon(Iconsax.scan),
             label: const Text('Scan'),

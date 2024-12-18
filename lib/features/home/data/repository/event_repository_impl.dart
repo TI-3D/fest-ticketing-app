@@ -40,6 +40,48 @@ class EventRepositoryImpl implements EventRepository {
   }
 
   @override
+  Future<Either<Failure, List<EventEntity>>> getEventsPopular() async {
+    // Cek koneksi internet
+    if (!await connectionChecker.isConnected) {
+      return Left(Failure('No internet connection'));
+    } 
+    // Memanggil API untuk mendapatkan event
+    final response = await remoteDataSource.getEventsPopular();
+    return response.fold(
+      (error) => Left(Failure(error.message)), // Jika error terjadi di API
+      (data) {
+        if (data.data['data'] == null || (data.data['data'] as List).isEmpty) {
+          return Left(Failure('No data found'));
+        }
+        final eventList = (data.data['data'] as List);
+        return Right(
+            eventList.map((e) => Event.fromMap(e).toEntity()).toList());
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<EventEntity>>> getEventsNewest() async {
+    // Cek koneksi internet
+    if (!await connectionChecker.isConnected) {
+      return Left(Failure('No internet connection'));
+    }
+    // Memanggil API untuk mendapatkan event
+    final response = await remoteDataSource.getEventsNewest();
+    return response.fold(
+      (error) => Left(Failure(error.message)), // Jika error terjadi di API
+      (data) {
+        if (data.data['data'] == null || (data.data['data'] as List).isEmpty) {
+          return Left(Failure('No data found'));
+        }
+        final eventList = (data.data['data'] as List);
+        return Right(
+            eventList.map((e) => Event.fromMap(e).toEntity()).toList());
+      },
+    );
+  }
+
+  @override
   Future<Either<Failure, List<String>>> getCategories() async {
     // Cek koneksi internet
     if (!await connectionChecker.isConnected) {
