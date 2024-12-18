@@ -6,8 +6,10 @@ import 'package:fest_ticketing/common/widgets/snackbar/snackbar_failed.dart';
 import 'package:fest_ticketing/common/widgets/snackbar/snackbar_warning.dart';
 import 'package:fest_ticketing/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:fest_ticketing/features/liveness_detection/presentation/pages/start_register.dart';
-import 'package:fest_ticketing/presentation/product/screen/payment.dart';
-import 'package:fest_ticketing/presentation/product/screen/payment_method.dart';
+import 'package:fest_ticketing/features/payment/data/models/payment.dart';
+import 'package:fest_ticketing/features/payment/domain/usecase/create_payment.dart';
+import 'package:fest_ticketing/features/payment/presentation/bloc/payment_cubit.dart';
+import 'package:fest_ticketing/features/product/presentation/pages/payment_method.dart';
 import 'package:fest_ticketing/presentation/product/screen/purchase_succes.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
@@ -30,13 +32,12 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
-  String selectedPaymentMethod = 'Credit Card';
+  PaymentMethodType selectedPaymentMethod = PaymentMethodType.CREDIT_CARD;
 
   @override
   Widget build(BuildContext context) {
     final double subtotal = widget.ticketClass.basePrice * widget.quantity;
-    final double serviceFee = subtotal * 0.05;
-    final double total = subtotal + serviceFee;
+    final double total = subtotal;
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -52,25 +53,40 @@ class _CheckoutState extends State<Checkout> {
           );
         }
       },
-      child: Scaffold(
-        appBar: BasicAppbar(
-          title: const Text('Checkout'),
-        ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildEventDetails(),
-                  const Divider(height: 32, color: Colors.grey),
-                  _buildEventInfo(),
-                ],
+      child: BlocListener<PaymentCubit, PaymentState>(
+        listener: (context, state) {
+          if (state is PaymentSuccess) {
+            // Navigate to success page
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PurchaseSucces()),
+            );
+          } else if (state is PaymentFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              FailedSnackBar(message: state.message),
+            );
+          }
+        },
+        child: Scaffold(
+          appBar: BasicAppbar(
+            title: const Text('Checkout'),
+          ),
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildEventDetails(),
+                    const Divider(height: 32, color: Colors.grey),
+                    _buildEventInfo(),
+                  ],
+                ),
               ),
-            ),
-            _buildPaymentDetails(total, serviceFee),
-          ],
+              _buildPaymentDetails(total),
+            ],
+          ),
         ),
       ),
     );
@@ -131,7 +147,7 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 
-  Widget _buildPaymentDetails(double total, double serviceFee) {
+  Widget _buildPaymentDetails(double total) {
     return DraggableScrollableSheet(
       initialChildSize: 0.5,
       minChildSize: 0.2,
@@ -154,8 +170,6 @@ class _CheckoutState extends State<Checkout> {
                 const SizedBox(height: 16),
                 _buildPriceRow('Subtotal',
                     'Rp ${widget.ticketClass.basePrice * widget.quantity}'),
-                _buildPriceRow(
-                    'Service Fee', 'Rp ${serviceFee.toStringAsFixed(0)}'),
                 _buildPriceRow('Total', 'Rp ${total.toStringAsFixed(0)}',
                     isBold: true),
                 const SizedBox(height: 16),
@@ -209,7 +223,7 @@ class _CheckoutState extends State<Checkout> {
     return ListTile(
       title: const Text('Payment Method',
           style: TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(selectedPaymentMethod),
+      subtitle: Text(selectedPaymentMethod.displayName),
       trailing: const Icon(Icons.chevron_right),
       onTap: () async {
         final result = await Navigator.push(
@@ -228,7 +242,8 @@ class _CheckoutState extends State<Checkout> {
 
         if (result != null) {
           setState(() {
-            selectedPaymentMethod = result;
+            selectedPaymentMethod =
+                result; // Ensure this is a PaymentMethodType
           });
         }
       },
@@ -240,35 +255,17 @@ class _CheckoutState extends State<Checkout> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // Handle checkout logic based on selected payment method
-          switch (selectedPaymentMethod) {
-            case 'Credit Card':
-              // Handle Credit Card Payment
-              break;
-            case 'Bank Transfer':
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Payment(
-                    totalAmount: total,
-                    bankName: 'Transfer Bank',
-                    PaymentCode: '8077 7000 1866 1840 4',
-                  ),
-                ),
-              );
-              break;
-            case 'DANA':
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PurchaseSucces(),
-                ),
-              );
-              break;
-            // Add other payment methods as needed
-            default:
-              break;
-          }
+          final paymentParams = CreatePaymentRequestParams(
+            amount: total,
+            qty: widget.quantity,
+            total: total,
+            eventId: widget.event.eventId,
+            eventClassId: widget.ticketClass.eventClassId,
+            paymentMethod: selectedPaymentMethod,
+          );
+
+          // Call the createNewPayment method from PaymentCubit
+          context.read<PaymentCubit>().createNewPayment(paymentParams);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColor.primary,

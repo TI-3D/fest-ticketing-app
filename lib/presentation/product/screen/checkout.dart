@@ -1,16 +1,20 @@
-import 'package:fest_ticketing/presentation/product/screen/payment.dart';
-import 'package:fest_ticketing/presentation/product/screen/payment_method.dart';
-import 'package:fest_ticketing/presentation/product/screen/purchase_succes.dart';
+import 'package:fest_ticketing/features/payment/data/models/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:fest_ticketing/core/constant/color.dart';
+import 'package:fest_ticketing/features/product/presentation/pages/payment_method.dart';
+import 'package:fest_ticketing/presentation/product/screen/purchase_succes.dart';
 
 class Checkout extends StatefulWidget {
+  final DateTime date;
+  final String location;
   final String ticketClass;
   final int quantity;
   final double price;
 
   const Checkout({
     Key? key,
+    required this.date,
+    required this.location,
     required this.ticketClass,
     required this.quantity,
     required this.price,
@@ -21,7 +25,7 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
-  String selectedPaymentMethod = 'Credit Card';
+  PaymentMethodType selectedPaymentMethod = PaymentMethodType.CREDIT_CARD;
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +113,9 @@ class _CheckoutState extends State<Checkout> {
             ),
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.5, // Ukuran awal sheet (40% dari tinggi layar)
-            minChildSize: 0.2, // Ukuran minimum sheet (20% dari tinggi layar)
-            maxChildSize: 0.8, // Ukuran maksimum sheet (80% dari tinggi layar)
+            initialChildSize: 0.5,
+            minChildSize: 0.2,
+            maxChildSize: 0.8,
             builder: (context, scrollController) {
               return Container(
                 padding: const EdgeInsets.all(16),
@@ -162,17 +166,20 @@ class _CheckoutState extends State<Checkout> {
                       ListTile(
                         title: const Text('Payment Method',
                             style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text(selectedPaymentMethod),
+                        subtitle: Text(selectedPaymentMethod.displayName),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () async {
                           final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => PaymentMethod(
-                                selectedPaymentMethod: selectedPaymentMethod,
+                                selectedPaymentMethod:
+                                    selectedPaymentMethod.displayName,
                                 onPaymentMethodSelected: (method) {
                                   setState(() {
-                                    selectedPaymentMethod = method;
+                                    selectedPaymentMethod =
+                                        PaymentMethodType.values.firstWhere(
+                                            (e) => e.displayName == method);
                                   });
                                 },
                               ),
@@ -192,33 +199,25 @@ class _CheckoutState extends State<Checkout> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (selectedPaymentMethod == 'Credit Card') {
-                              // Credit Card Payment
-                            } else if (selectedPaymentMethod ==
-                                'Bank Transfer') {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Payment(
-                                      totalAmount: total,
-                                      bankName: 'Transfer Bank',
-                                      PaymentCode: '8077 7000 1866 1840 4'),
-                                ),
-                              );
-                            } else if (selectedPaymentMethod == 'Paypal') {
-                              // Paypal Payment
-                            } else if (selectedPaymentMethod == 'Gopay') {
-                              // Gopay Payment
-                            } else if (selectedPaymentMethod == 'DANA') {
-                              // DANA Payment
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PurchaseSucces()),
-                              );
-                            } else if (selectedPaymentMethod == 'OVO') {
-                              // OVO Payment
-                            } else {}
+                            switch (selectedPaymentMethod) {
+                              case PaymentMethodType.CREDIT_CARD:
+                                // Credit Card Payment
+                                break;
+                              case PaymentMethodType.GOPAY:
+                                // Gopay Payment
+                                break;
+                              case PaymentMethodType.DANA:
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PurchaseSucces()),
+                                );
+                                break;
+                              case PaymentMethodType.OVO:
+                                // OVO Payment
+                                break;
+                              // Add other cases as needed
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColor.primary,
@@ -259,7 +258,7 @@ class _CheckoutState extends State<Checkout> {
       child: Row(
         children: [
           Flexible(
-            flex: 1, // Default flex 1
+            flex: 1,
             child: Text(
               label,
               style: TextStyle(
@@ -270,9 +269,9 @@ class _CheckoutState extends State<Checkout> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 8), // Tambahkan jarak
+          const SizedBox(width: 8),
           Flexible(
-            flex: 2, // Default flex 2
+            flex: 2,
             child: Text(
               value,
               style: TextStyle(

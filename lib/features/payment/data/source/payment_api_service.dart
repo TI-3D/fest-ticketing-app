@@ -8,7 +8,8 @@ import 'package:fest_ticketing/features/payment/domain/usecase/create_payment.da
 abstract class PaymentApiService {
   Future<Either<ServerException, Response>> getPayments();
   Future<Either<ServerException, Response>> getPaymentById(String id);
-  Future<Either<ServerException, Response>> createPayment(CreatePaymentRequestParams params);
+  Future<Either<ServerException, Response>> createPayment(
+      CreatePaymentRequestParams params);
 }
 
 class PaymentApiServiceImpl implements PaymentApiService {
@@ -34,7 +35,7 @@ class PaymentApiServiceImpl implements PaymentApiService {
           ServerException(e.response?.data['message'] ?? 'Unknown error'));
     }
   }
-  
+
   @override
   Future<Either<ServerException, Response>> getPaymentById(String id) async {
     try {
@@ -53,7 +54,8 @@ class PaymentApiServiceImpl implements PaymentApiService {
   }
 
   @override
-  Future<Either<ServerException, Response>> createPayment(CreatePaymentRequestParams params) async {
+  Future<Either<ServerException, Response>> createPayment(
+      CreatePaymentRequestParams params) async {
     try {
       final Response response = await _dioClient.post(
         ApiUrl.createPayment,

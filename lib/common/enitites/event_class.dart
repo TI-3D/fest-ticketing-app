@@ -1,5 +1,5 @@
 class EventClassEntity {
-  final String? eventClassId;
+  final String eventClassId;
   final String eventId;
   final String className;
   final double basePrice;

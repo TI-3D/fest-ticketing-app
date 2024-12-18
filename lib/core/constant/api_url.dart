@@ -1,6 +1,6 @@
 class ApiUrl {
   // static const String host = 'api.raihanachmad.web.id';
-  static const String host = '192.168.1.156:8000';
+  static const String host = '192.168.78.22:8000';
   static const String baseUrl = 'http://${host}/api/v1';
   // Auth
   static const String signup = '$baseUrl/auth/signup';
